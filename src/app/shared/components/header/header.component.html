@@ -1,0 +1,26 @@
+<div class="container">
+  <ul class="nav justify-content-end">
+    <li class="nav-item">
+      <a class="nav-link"  routerLink="/">Home</a>
+    </li>
+
+    <ng-container *ngIf="!isLoggedIn()">
+      <li class="nav-item">
+        <a class="nav-link"  routerLink="/auth/register">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/auth/login">Login</a>
+      </li>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn()">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/auth/profile">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-danger" (click)="logout()">Logout</a>
+      </li>
+    </ng-container>
+  </ul>
+</div>
+<hr>

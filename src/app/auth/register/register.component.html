@@ -1,1 +1,40 @@
-<p>register works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 offset-4 border p-3">
+      <h3>Register</h3>
+      <form [formGroup]="registerForm">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            aria-describedby="name"
+            placeholder="Name"
+            formControlName="name"
+          >
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            aria-describedby="email"
+            formControlName="email"
+          >
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            formControlName="password"
+          >
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="register()">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
