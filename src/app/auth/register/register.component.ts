@@ -42,15 +42,16 @@ export class RegisterComponent implements OnInit {
       email: formValues.email,
       password: formValues.password
     }
+    console.log(`user to register >>>`, user)
 
     this.authService.createUser(user)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
-          console.log(res)
+          console.log(`created user >>>`, res, res.token)
           this.router.navigate(['/profile'])
         },
-        error: (e) => { console.log(e.error.message) }
+        // error: (e) => { console.log(e.error.message) }
       })
 
   }

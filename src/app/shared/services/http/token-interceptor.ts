@@ -10,7 +10,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
   intercept(authReq: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const whiteListedUrls = [`/register`, `/login`, ];
+    const whiteListedUrls = [`/register`, `/login`, `/confirm-registration`];
 
     const whiteListed = whiteListedUrls.some(url => authReq.url.includes(url));
     if (whiteListed) {

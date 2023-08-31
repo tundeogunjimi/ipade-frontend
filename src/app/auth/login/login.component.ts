@@ -17,8 +17,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {
-  }
+  ) {}
   ngOnInit(): void {
     const isLoggedIn = this.authService.isLoggedIn()
     if(isLoggedIn) {

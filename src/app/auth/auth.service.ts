@@ -18,7 +18,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}`, JSON.stringify(user), { headers: this.headers})
+    return this.http.post<User>(`${this.baseUrl}/register`, JSON.stringify(user), { headers: this.headers})
   }
 
   loginUser(loginDetails): Observable<User> {
