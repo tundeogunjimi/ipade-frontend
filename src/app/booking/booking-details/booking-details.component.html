@@ -1,0 +1,36 @@
+<div class="container mt-5">
+  <div class="col-sm-8 offset-sm-2 border p-3">
+    <p class="lead fw-medium">Booking Details</p>
+
+    <table class="table table-bordered table-striped">
+      <tbody>
+      <tr>
+        <td>Invoice no: 123456789AB</td>
+        <td colspan="2">Payment status: PENDING (NGN20,100)</td>
+      </tr>
+      <tr>
+        <td>Name: Tunde Ogunjimi</td>
+        <td>Email: tundeogunjimi@gmail.com</td>
+        <td>Mobile: 08060911051</td>
+      </tr>
+      <tr>
+        <td>Date: 25th August, 2023</td>
+        <td>Time: 9.15 A.M.</td>
+        <td>Gender: Male</td>
+      </tr>
+      <tr>
+        <td>Purpose of visit: Counseling</td>
+        <td colspan="2">Message: I need some financial education</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="row mt-3">
+      <div class="col-sm-4 offset-sm-8 text-end">
+        <button class="btn btn-outline-secondary me-2" (click)="goBack()">Go back</button>
+        <button class="btn btn-secondary" (click)="proceedToPayment()">Make payment</button>
+      </div>
+    </div>
+
+  </div>
+</div>

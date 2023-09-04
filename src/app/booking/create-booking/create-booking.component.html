@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <div class="col-sm-8 offset-sm-2 border p-3">
+    <p class="lead fw-medium">New Booking</p>
+
+    <form [formGroup]="bookingForm">
+      <div class="row">
+        <div class="col">
+          <input formControlName="name" type="text" class="form-control" placeholder="Name" aria-label="Name">
+        </div>
+        <div class="col">
+          <input formControlName="email" type="email" class="form-control" placeholder="Email" aria-label="Email">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <input formControlName="mobile" type="text" class="form-control" placeholder="Mobile" aria-label="Mobile">
+        </div>
+        <div class="col">
+          <input formControlName="gender" type="radio" class="btn-check" value="male" id="option5" autocomplete="off" checked>
+          <label class="btn" for="option5">Male</label>
+
+          <input formControlName="gender" type="radio" class="btn-check" value="female" id="option6" autocomplete="off">
+          <label class="btn" for="option6">Female</label>
+
+          <input formControlName="gender" type="radio" class="btn-check" value="others" id="option7" autocomplete="off">
+          <label class="btn" for="option7">Others</label>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <input formControlName="date" type="date" class="form-control" placeholder="Date" aria-label="Date">
+        </div>
+        <div class="col">
+          <input formControlName="time" type="time" class="form-control" placeholder="Time" aria-label="Time">
+        </div>
+        <div class="col">
+          <input formControlName="purpose" type="text" class="form-control" placeholder="Purpose of visit" aria-label="Purpose of visit">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="form-floating">
+          <textarea formControlName="message" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+          <label for="floatingTextarea">Any other information you'd like to share?</label>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-sm-4 offset-sm-8 text-end">
+          <button class="btn btn-outline-secondary me-2">Clear</button>
+          <button class="btn btn-secondary" (click)="saveBooking()">Continue</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

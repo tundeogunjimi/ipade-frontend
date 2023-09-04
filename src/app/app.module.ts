@@ -8,6 +8,7 @@ import {AuthModule} from "./auth/auth.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "./shared/services/http/token-interceptor";
 import {HeaderComponent} from "./shared/components/header/header.component";
+import {BookingModule} from "./booking/booking.module";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {HeaderComponent} from "./shared/components/header/header.component";
     BrowserModule,
     AppRoutingModule,
     AuthModule,
+    BookingModule,
     HttpClientModule
   ],
   providers: [
