@@ -1,8 +1,39 @@
 <div class="container mt-5">
   <div class="col-sm-8 offset-sm-2 border p-3">
-    <p class="lead fw-medium">Complete Payment</p>
+    <p class="lead fw-medium">Confirm payment</p>
 
+    <table class="table table-bordered table-striped">
+      <tbody>
+      <tr>
+        <td>Invoice no: {{ transaction?.tx_ref }}</td>
+        <td colspan="2">
+          Payment status: {{ getPaymentStatus(transaction?.payment_status?.status) }}
+                          ({{ transaction?.currency}}{{ transaction?.amount | number: '1.2-2'}})
+        </td>
+      </tr>
+      <tr>
+        <td>Name: {{ booking?.name }}</td>
+        <td>Email: {{ booking?.email }}</td>
+        <td>Mobile: {{ booking?.mobile }}</td>
+      </tr>
+      <tr>
+        <td>Date: {{ booking?.appointmentDate | date }}</td>
+        <td>Time: {{ booking?.appointmentTime }}</td>
+        <td>Gender: {{ booking?.gender }}</td>
+      </tr>
+      <tr>
+        <td>Purpose of visit: {{ booking?.purpose }}</td>
+        <td colspan="2">{{ booking?.message }}</td>
+      </tr>
+      </tbody>
+    </table>
 
+    <div class="row mt-3">
+      <div class="col-sm-6 offset-sm-6 text-end">
+<!--        <button class="btn btn-outline-secondary me-2">Go back</button>-->
+        <button class="btn btn-secondary">Download Receipt</button>
+      </div>
+    </div>
 
   </div>
 </div>

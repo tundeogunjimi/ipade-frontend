@@ -1,4 +1,5 @@
 export interface Booking {
+  _id?: string,
   name: string,
   email: string,
   gender: string,

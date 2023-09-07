@@ -9,24 +9,24 @@
         <td colspan="2">Payment status: PENDING (NGN20,100)</td>
       </tr>
       <tr>
-        <td>Name: Tunde Ogunjimi</td>
-        <td>Email: tundeogunjimi@gmail.com</td>
-        <td>Mobile: 08060911051</td>
+        <td>Name: {{ booking?.name }}</td>
+        <td>Email: {{ booking?.email }}</td>
+        <td>Mobile: {{ booking?.mobile }}</td>
       </tr>
       <tr>
-        <td>Date: 25th August, 2023</td>
-        <td>Time: 9.15 A.M.</td>
-        <td>Gender: Male</td>
+        <td>Date: {{ booking?.appointmentDate | date }}</td>
+        <td>Time: {{ booking?.appointmentTime }}</td>
+        <td>Gender: {{ booking?.gender }}</td>
       </tr>
       <tr>
-        <td>Purpose of visit: Counseling</td>
-        <td colspan="2">Message: I need some financial education</td>
+        <td>Purpose of visit: {{ booking?.purpose }}</td>
+        <td colspan="2">{{ booking?.message }}</td>
       </tr>
       </tbody>
     </table>
 
     <div class="row mt-3">
-      <div class="col-sm-4 offset-sm-8 text-end">
+      <div class="col-sm-6 offset-sm-6 text-end">
         <button class="btn btn-outline-secondary me-2" (click)="goBack()">Go back</button>
         <button class="btn btn-secondary" (click)="proceedToPayment()">Make payment</button>
       </div>
