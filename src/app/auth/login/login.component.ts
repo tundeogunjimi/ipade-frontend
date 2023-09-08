@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 import {take} from "rxjs";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
   ngOnInit(): void {
     const isLoggedIn = this.authService.isLoggedIn()
@@ -49,7 +51,10 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('user', JSON.stringify(res))
           this.router.navigate(['/profile'])
         },
-        error: (e) => { console.log(e.error.message) }
+        error: (e) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: e.error.message });
+          console.log(e.error.message)
+        }
       })
   }
 

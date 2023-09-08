@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {Booking} from "../../shared/data/booking/booking-model";
@@ -15,6 +15,11 @@ export class CreateBookingComponent implements OnInit {
 
   public bookingForm: FormGroup
   public bookingId: string
+  public formErrors: FormError
+
+  public time: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  public slicedTime: any[]
+  public selectedTime: string;
 
   constructor(
     private fb: FormBuilder,
@@ -34,22 +39,23 @@ export class CreateBookingComponent implements OnInit {
 
   createBookingForm(): void {
     this.bookingForm = this.fb.group({
-      name: [''],
-      email: [''],
-      mobile: [''],
+      name: new FormControl('',),
+      email: new FormControl('', ),
+      mobile: new FormControl('', ),
       gender: [''],
-      date: [''],
-      time: [''],
+      date: new FormControl('', ),
+      time: new FormControl('', ),
       purpose: [''],
       message: ['']
     })
   }
 
   saveBooking(): void {
-    const formValue = this.bookingForm.getRawValue()
+    this.formErrors = {}
+    const formValue = this.bookingForm.getRawValue() //todo: trim name & email
     const booking: Booking = {
-      appointmentDate: formValue.date,
-      appointmentTime: formValue.time,
+      date: formValue.date,
+      time: this.selectedTime,
       completed: false,
       email: formValue.email,
       gender: formValue.gender,
@@ -79,7 +85,10 @@ export class CreateBookingComponent implements OnInit {
           console.log('booking created successfully')
           this.router.navigate([`/booking/booking-details/${res._id}`])
         },
-        error: (e) => {console.log(e)}
+        error: (e) => {
+          this.formErrors = e.error
+          console.log(e)
+        }
       })
   }
 
@@ -92,7 +101,10 @@ export class CreateBookingComponent implements OnInit {
           console.log(`booking with id ${this.bookingId} successfully updated!`)
           this.router.navigate([`/booking/booking-details/${res._id}`])
         },
-        error: (e) => { console.log(e) }
+        error: (e) => {
+          console.log(e.error)
+          this.formErrors = e.error
+        }
       })
   }
 
@@ -101,8 +113,8 @@ export class CreateBookingComponent implements OnInit {
       .pipe(take(1))
       .subscribe((booking) => {
         this.bookingForm.patchValue({
-          appointmentDate: booking.appointmentDate,
-          appointmentTime: booking.appointmentTime,
+          date: booking.date,
+          time: this.selectedTime,
           completed: false,
           email: booking.email,
           gender: booking.gender,
@@ -117,4 +129,38 @@ export class CreateBookingComponent implements OnInit {
       })
   }
 
+  sliceTime(): void {
+    const eventDate = this.bookingForm.getRawValue().date;
+    console.log(`event from p-calendar >>>`, eventDate)
+    let start = new Date(eventDate); // format: new Date("2016-05-04T00:00:00.000Z");
+    start.setHours(0,0,0,0)
+    let end = new Date(start.getTime() + (24 * 60 * 60 * 1000));
+
+    let slices = [];
+    let count = 0;
+
+    while (end >= start) {
+      slices[count] = start;
+      start = new Date(start.getTime() + (30 * 60 * 1000));
+      count++;
+    }
+
+    this.slicedTime = slices;
+  }
+
+  selectTime(time: string): void {
+    this.selectedTime = time;
+  }
+}
+
+interface FormError {
+  name?: string,
+  email?: string,
+  mobile?: string,
+  gender?: string,
+  date?: string,
+  time?: string,
+  purpose?: string,
+  message?: string
+  status?: string
 }

@@ -29,6 +29,10 @@ export class AuthService {
     return this.http.get<User>(`${this.baseUrl}/me`, { headers: this.headers })
   }
 
+  confirmUser(queryParams): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/confirm`, { headers: this.headers, params: queryParams })
+  }
+
   getAuthToken(): string {
     const token = (JSON.parse(localStorage.getItem('user'))).token
     if (!token) {

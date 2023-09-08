@@ -9,6 +9,8 @@ import {RouterLink} from "@angular/router";
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ConfirmRegistrationComponent } from './confirm-registration/confirm-registration.component';
+import {MessagesModule} from "primeng/messages";
+import {ToastModule} from "primeng/toast";
 
 @NgModule({
   declarations: [
@@ -19,11 +21,13 @@ import { ConfirmRegistrationComponent } from './confirm-registration/confirm-reg
     ResetPasswordComponent,
     ConfirmRegistrationComponent
   ],
-    imports: [
-        CommonModule,
-        AuthRoutingModule,
-        ReactiveFormsModule,
-        RouterLink,
-    ]
+  imports: [
+    CommonModule,
+    AuthRoutingModule,
+    ReactiveFormsModule,
+    RouterLink,
+    MessagesModule,
+    ToastModule,
+  ]
 })
 export class AuthModule { }

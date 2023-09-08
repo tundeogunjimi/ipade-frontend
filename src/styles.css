@@ -1,1 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/*General styles*/
+.btn, .form-control {
+  border-radius: 0;
+}
+
+
+.btn {
+  /*width: 100px;*/
+}
+
+.btn-primary, .btn-check:checked + .btn {
+  background: #1050a5;
+  border: none;
+}
+
+.btn-outline-primary {
+  color: #1050a5;
+  border: solid 1px #1050a5;
+  font-weight: 400;
+}
+
+.btn-full-width {
+  width: 100%
+}
+
+
+
+.text-primary, .nav-link, a {
+  color: #1050a5!important;
+  text-decoration: none;
+}
+
+

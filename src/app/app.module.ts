@@ -9,6 +9,9 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "./shared/services/http/token-interceptor";
 import {HeaderComponent} from "./shared/components/header/header.component";
 import {BookingModule} from "./booking/booking.module";
+import {MessageService} from "primeng/api";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ToastModule} from "primeng/toast";
 
 @NgModule({
   declarations: [
@@ -21,14 +24,17 @@ import {BookingModule} from "./booking/booking.module";
     AppRoutingModule,
     AuthModule,
     BookingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

@@ -26,6 +26,7 @@ export class BookingDetailsComponent implements OnInit{
       .pipe(take(1))
       .subscribe((res) => {
         this.booking = res
+        sessionStorage.setItem('booking_id', id)
       })
   }
 
@@ -45,7 +46,7 @@ export class BookingDetailsComponent implements OnInit{
       },
       customer: {
         email: this.booking.email,
-        phonenumber: this.booking.mobile,
+        phonenumber: '08060911051',
         name: this.booking.name
       },
       customizations: { // todo: fetch these from tenant params

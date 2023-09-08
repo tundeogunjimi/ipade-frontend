@@ -5,6 +5,7 @@ import {BookingRoutingModule} from "./booking-routing.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import { MakePaymentComponent } from './make-payment/make-payment.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
+import {CalendarModule} from "primeng/calendar";
 
 
 
@@ -14,10 +15,11 @@ import { BookingDetailsComponent } from './booking-details/booking-details.compo
     MakePaymentComponent,
     BookingDetailsComponent
   ],
-  imports: [
-    CommonModule,
-    BookingRoutingModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        BookingRoutingModule,
+        ReactiveFormsModule,
+        CalendarModule
+    ]
 })
 export class BookingModule { }

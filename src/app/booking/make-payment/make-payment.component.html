@@ -1,8 +1,32 @@
-<div class="container mt-5">
+<div class="container mt-5" *ngIf="paymentStatus !== 'cancelled'">
   <div class="col-sm-8 offset-sm-2 border p-3">
-    <p class="lead fw-medium">Confirm payment</p>
+    <p class="lead fw-medium text-primary">Confirm payment</p>
 
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered">
+      <tbody>
+      <tr>
+        <td><span class="fw-medium">Invoice no:</span> {{ transaction?.tx_ref }}</td>
+        <td><span class="fw-medium">Name:</span> {{ booking?.name }}</td>
+        <td><span class="fw-medium">Payment status:</span>
+          {{ getPaymentStatus(transaction?.payment_status?.status) }}
+          ({{ transaction?.currency}}{{ transaction?.amount | number: '1.2-2'}})
+        </td>
+      </tr>
+      <tr>
+        <td><span class="fw-medium">Email:</span> {{ booking?.email }}</td>
+        <td><span class="fw-medium">Date:</span> {{ booking?.date | date }}</td>
+        <td><span class="fw-medium">Time:</span> {{ booking?.time | date: 'shortTime'}}</td>
+      </tr>
+      <tr>
+
+      </tr>
+      <tr>
+        <td colspan="3"><span class="fw-medium">Additional Info: </span>{{ booking?.message }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!--<table class="table table-bordered table-striped">
       <tbody>
       <tr>
         <td>Invoice no: {{ transaction?.tx_ref }}</td>
@@ -17,8 +41,8 @@
         <td>Mobile: {{ booking?.mobile }}</td>
       </tr>
       <tr>
-        <td>Date: {{ booking?.appointmentDate | date }}</td>
-        <td>Time: {{ booking?.appointmentTime }}</td>
+        <td>Date: {{ booking?.date | date }}</td>
+        <td>Time: {{ booking?.time }}</td>
         <td>Gender: {{ booking?.gender }}</td>
       </tr>
       <tr>
@@ -26,14 +50,23 @@
         <td colspan="2">{{ booking?.message }}</td>
       </tr>
       </tbody>
-    </table>
+    </table>-->
 
     <div class="row mt-3">
       <div class="col-sm-6 offset-sm-6 text-end">
 <!--        <button class="btn btn-outline-secondary me-2">Go back</button>-->
-        <button class="btn btn-secondary">Download Receipt</button>
+        <button class="btn btn-primary">Download Receipt</button>
       </div>
     </div>
 
+  </div>
+</div>
+
+<div class="container mt-5" *ngIf="paymentStatus === 'cancelled'">
+  <div class="col-sm-8 offset-sm-2 border p-3 text-center">
+    <p class="lead fw-medium">Cancelled payment</p>
+
+    <div class="alert alert-warning">An error occurred and the payment was cancelled.</div>
+    <button class="btn btn-primary" (click)="backToBookingDetails()">TRY AGAIN</button>
   </div>
 </div>

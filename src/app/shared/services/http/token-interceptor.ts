@@ -14,7 +14,8 @@ export class TokenInterceptor implements HttpInterceptor {
       `/register`,
       `/login`,
       `/confirm-registration`,
-      `/booking`
+      `/booking`,
+      `/confirm`
     ];
 
     const whiteListed = whiteListedUrls.some(url => authReq.url.includes(url));

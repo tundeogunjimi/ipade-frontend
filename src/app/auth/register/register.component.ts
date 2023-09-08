@@ -4,6 +4,7 @@ import {AuthService} from "../auth.service";
 import {take} from "rxjs";
 import {User} from "../../shared/data/auth/user-model";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-register',
@@ -13,10 +14,12 @@ import {Router} from "@angular/router";
 export class RegisterComponent implements OnInit {
 
   public registerForm!: FormGroup
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
   }
   ngOnInit(): void {
@@ -49,9 +52,12 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(`created user >>>`, res, res.token)
-          this.router.navigate(['/profile'])
+          this.router.navigate(['/confirm-registration'])
         },
-        // error: (e) => { console.log(e.error.message) }
+        error: (e) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: e.error.message });
+          console.log(`error: `, e.error.message)
+        }
       })
 
   }

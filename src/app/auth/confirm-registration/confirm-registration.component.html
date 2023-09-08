@@ -1,7 +1,14 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-4 offset-4 border p-3">
-      <h3>Registration confirmed!</h3>
+    <div class="col-sm-4 offset-4 border p-3 text-center">
+      <ng-container *ngIf="!isConfirmed">
+        <h4>Confirm registration</h4>
+        <p>{{ confirmationMessage | titlecase }}</p>
+      </ng-container>
+      <ng-container *ngIf="isConfirmed">
+        <h4 class="text-success">Registration confirmed!</h4>
+        <a class="btn btn-success" routerLink="/auth/login">Login</a>
+      </ng-container>
     </div>
   </div>
 </div>

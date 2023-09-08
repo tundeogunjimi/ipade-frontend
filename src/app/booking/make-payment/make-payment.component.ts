@@ -14,6 +14,7 @@ export class MakePaymentComponent implements OnInit{
 
   public booking: Booking
   public transaction: Transaction
+  paymentStatus: string;
 
   constructor(
     private router: Router,
@@ -24,6 +25,9 @@ export class MakePaymentComponent implements OnInit{
 
   ngOnInit(): void {
     const params = this.activatedRoute.snapshot.queryParams
+    console.log(`query params >>>`, params)
+    this.paymentStatus = params['status']
+
     this.bookingService.verifyPayment(params)
       .pipe(take(1))
       .subscribe({
@@ -46,5 +50,10 @@ export class MakePaymentComponent implements OnInit{
 
   getPaymentStatus(status: string): string {
     return status === 'successful' ? 'PAID' : 'PENDING'
+  }
+
+  backToBookingDetails() {
+    const id = sessionStorage.getItem('booking_id')
+    this.router.navigate([`/booking/booking-details/${id}`])
   }
 }
