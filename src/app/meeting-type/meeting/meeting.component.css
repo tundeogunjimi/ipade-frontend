@@ -1,0 +1,10 @@
+
+::ng-deep .p-inputtext {
+  padding: 0.4rem;
+  border-radius: 0;
+}
+
+::ng-deep .p-scrollpanel .p-scrollpanel-bar {
+  background: #1050a5;
+  border: 0 none;
+}

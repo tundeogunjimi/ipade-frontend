@@ -1,9 +1,32 @@
-<div class="container">
-  <ul class="nav justify-content-end">
-    <li class="nav-item">
-      <a class="nav-link"  routerLink="/">Home</a>
-    </li>
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+    <span class="fs-4 fw-medium">Ipade</span>
+  </a>
 
+  <ul class="nav nav-pills me-md-5">
+    <ng-container *ngIf="isLoggedIn()">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/booking/new-booking">New Booking</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/meeting">Meetings</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Account
+        </a>
+        <ul class="dropdown-menu" style="border-radius: 0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/auth/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger" (click)="logout()">Logout</a>
+          </li>
+        </ul>
+      </li>
+
+    </ng-container>
     <ng-container *ngIf="!isLoggedIn()">
       <li class="nav-item">
         <a class="nav-link"  routerLink="/auth/register">Register</a>
@@ -12,18 +35,5 @@
         <a class="nav-link" routerLink="/auth/login">Login</a>
       </li>
     </ng-container>
-
-    <ng-container *ngIf="isLoggedIn()">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/auth/profile">Profile</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/booking/new-booking">New Booking</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-danger" (click)="logout()">Logout</a>
-      </li>
-    </ng-container>
   </ul>
-</div>
-<hr>
+</header>

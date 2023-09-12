@@ -6,7 +6,7 @@ html, body {
 }
 
 /*General styles*/
-.btn, .form-control {
+.btn, .form-control, .form-select {
   border-radius: 0;
 }
 
@@ -30,11 +30,37 @@ html, body {
   width: 100%
 }
 
-
-
-.text-primary, .nav-link, a {
+.text-primary {
   color: #1050a5!important;
+}
+
+.nav-item .nav-link {
+  color: #1050a5!important;
+  font-weight: 400;
   text-decoration: none;
+  cursor: pointer;
+  padding-bottom: 5px;
+  border-radius: 0;
+}
+
+.nav-item .nav-link:hover {
+  color: #fff!important;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  background: #1050a5;
+}
+
+.card {
+  border-radius: 0;
+}
+
+.card .card-body {
+  padding: 0.5rem;
+}
+
+.meeting-card {
+  padding: 0.5rem 0.5rem 0.1rem!important;
 }
 
 
