@@ -24,22 +24,22 @@
 
         <div class="col-md-4 col-sm-12">
           <div class="client-info">
-            <p class="lead fw-bold text-secondary">Abajo Abisoye</p>
-            <h3 class="text-primary mb-2">Medical Consultation</h3>
+            <p class="lead fw-bold text-secondary">{{ user?.name }}</p>
+            <h3 class="text-primary mb-2">{{ meeting?.name | titlecase }}</h3>
 
             <table class="table table-borderless">
               <tbody>
               <tr>
                 <th scope="row">Duration</th>
-                <td>30 minutes</td>
+                <td>{{ meeting.duration }} minutes</td>
               </tr>
               <tr>
                 <th scope="row">Location</th>
-                <td>Google Meet</td>
+                <td>{{ meeting.location | titlecase }}</td>
               </tr>
               <tr>
                 <th scope="row">Fee</th>
-                <td>N2,500</td>
+                <td>{{ meeting.price | currency: 'N'}}</td>
               </tr>
               </tbody>
             </table>

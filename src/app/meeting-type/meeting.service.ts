@@ -22,11 +22,19 @@ export class MeetingService {
     return this.http.post<Meeting>(`${this.baseUrl}/meeting/`, JSON.stringify(meeting), { headers: this.headers})
   }
 
+  getMeeting(meetingId: string, tenantId: string): Observable<Meeting> {
+    return this.http.get<Meeting>(`${this.baseUrl}/meeting/${meetingId}/${tenantId}`, { headers: this.headers })
+  }
+
   getMeetings(tenantId: string): Observable<Meeting[]> {
     return this.http.get<Meeting[]>(`${this.baseUrl}/meeting?tenantId=${tenantId}`, { headers: this.headers })
   }
 
   updateMeeting(meeting: Meeting, id: string, tenantId: string): Observable<Meeting> {
     return this.http.put<Meeting>(`${this.baseUrl}/meeting/${id}?tenantId=${tenantId}`, JSON.stringify(meeting), { headers: this.headers})
+  }
+
+  deleteMeeting(id: string): Observable<any> {
+    return this.http.delete<Meeting>(`${this.baseUrl}/meeting/${id}`,{ headers: this.headers})
   }
 }

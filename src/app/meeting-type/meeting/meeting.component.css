@@ -8,3 +8,18 @@
   background: #1050a5;
   border: 0 none;
 }
+
+.tab-content {
+  background: #eee;
+  padding: 0.5rem;
+}
+
+.action-icons i {
+  margin-right: 1rem;
+  padding: 0.5rem;
+}
+
+.action-icons i:hover {
+  margin-right: 1rem;
+  background: #eee;
+}

@@ -5,6 +5,9 @@ import {AuthService} from "../../auth/auth.service";
 import {Booking} from "../../shared/data/booking/booking-model";
 import {BookingService} from "../booking.service";
 import {take} from "rxjs";
+import {MeetingService} from "../../meeting-type/meeting.service";
+import {Meeting} from "../../shared/data/meeting/meeting";
+import {User} from "../../shared/data/auth/user-model";
 
 @Component({
   selector: 'app-create-booking',
@@ -19,22 +22,42 @@ export class CreateBookingComponent implements OnInit {
 
   public time: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   public slicedTime: any[]
-  public selectedTime: string;
+  public selectedTime: string
+  public meeting: Meeting
+  public user: any
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private bookingService: BookingService
-  ) {
-  }
+    private bookingService: BookingService,
+    private meetingService: MeetingService
+  ) {}
   ngOnInit(): void {
     this.createBookingForm()
     this.bookingId = this.activatedRoute.snapshot.params['id']
+    const meetingId = this.activatedRoute.snapshot.queryParams['meetingId']
+    this.user = JSON.parse(localStorage.getItem(`user`))
+
+    this.getMeeting(meetingId, this.user._id)
     if (this.bookingId) {
       this.populateBookingForm(this.bookingId)
     }
+  }
+
+  getMeeting(id: string, tenantId): void {
+    this.meetingService.getMeeting(id, tenantId)
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.meeting = res
+          console.log(`meeting>>> `, res)
+        },
+        error: (e) => {
+          console.log(`error: `, e.error.message)
+        }
+      })
   }
 
   createBookingForm(): void {

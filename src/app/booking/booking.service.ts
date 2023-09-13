@@ -22,6 +22,10 @@ export class BookingService {
     return this.http.post<Booking>(`${this.baseUrl}/booking/`, JSON.stringify(booking), { headers: this.headers})
   }
 
+  getAllBooking(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.baseUrl}/booking?tenantId=123456&email=tundeogunjimi@gmail.com`, { headers: this.headers })
+  }
+
   getBooking(id: string): Observable<Booking> {
     return this.http.get<Booking>(`${this.baseUrl}/booking/${id}?tenantId=123456`, { headers: this.headers })
   }

@@ -21,7 +21,13 @@ export class MeetingComponent implements OnInit{
   public formErrors: FormError
   public meetings: Meeting[]
   public selectedMeeting: Meeting
-  public saveButtonTxt: string = 'Save'
+  public saveButtonTxt: string = 'save'
+  public isMeetingFetched: boolean = false
+  public shouldShowAddressField: boolean = false
+  public locations = [
+    { name: 'In Person', value: 'in-person'},
+    { name: 'Online', value: 'online'},
+  ]
 
   constructor(
     private authService: AuthService,
@@ -39,17 +45,24 @@ export class MeetingComponent implements OnInit{
   }
 
   getMeetings(tenantId: string): void {
+    this.meetings = []
     this.meetingService.getMeetings(tenantId)
       .pipe(take(1))
       .subscribe({
-        next: (res) => { this.meetings = res },
-        error: (e) => { console.log(`error from backend >>>`, e.error.message)}
+        next: (res) => {
+          this.meetings = res
+          this.isMeetingFetched = true;
+        },
+        error: (e) => {
+          console.log(`error from backend >>>`, e.error.message)
+          this.isMeetingFetched = true;
+        }
       })
   }
 
   initializeFormErrors() {
     this.formErrors = {
-      dateRange: "", desc: "", duration: "", isFree: "", link: "", location: "", name: "", price: "", tenantId: ""
+      dateRange: "", desc: "", duration: "", isFree: "", link: "", location: "", name: "", price: "", tenantId: "", address: ""
     }
   }
 
@@ -58,6 +71,7 @@ export class MeetingComponent implements OnInit{
       name: [''],
       duration: [''],
       location: [''],
+      address: [''],
       dateRange: [''],
       price: [''],
       desc: [''],
@@ -112,6 +126,7 @@ export class MeetingComponent implements OnInit{
       desc: formValues.desc,
       link: formValues.link,
       location: formValues.location,
+      address: formValues.address,
       duration: formValues.duration,
       name: formValues.name,
       price: formValues.price,
@@ -153,9 +168,9 @@ export class MeetingComponent implements OnInit{
     const meetingToUpdate: Meeting = {
       ...formValues,
       dateRange,
-      tenantId: this.selectedMeeting.tenantId
+      tenantId: this.selectedMeeting?.tenantId
     }
-    this.meetingService.updateMeeting(meetingToUpdate, this.selectedMeeting._id, this.currentUser.id)
+    this.meetingService.updateMeeting(meetingToUpdate, this.selectedMeeting?._id, this.currentUser.id)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
@@ -187,11 +202,44 @@ export class MeetingComponent implements OnInit{
   }
 
   saveMeeting(): void {
-    if (this.saveButtonTxt === 'create') {
+    if (this.saveButtonTxt === 'save') {
       this.createMeeting();
     } else {
       this.updateMeeting();
     }
+  }
+
+  prepareForDelete(meeting: Meeting): void {
+    this.selectedMeeting = meeting
+  }
+
+  deleteMeeting(): void {
+    this.meetingService.deleteMeeting(this.selectedMeeting._id)
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Meeting successfully deleted.'
+          })
+          this.getMeetings(this.currentUser.id)
+        },
+        error: (e) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Could not delete',
+            detail: e.error.message
+          })
+          this.formErrors = e.error
+          console.log(`meeting delete failed`, e.error.message)
+        }
+      })
+  }
+
+  checkLocationValue() {
+    const location = this.meetingForm.getRawValue().location
+    this.shouldShowAddressField = location === 'in-person';
   }
 }
 
@@ -200,6 +248,7 @@ interface FormError {
   desc: string,
   link: string,
   location: string,
+  address?: string,
   name: string,
   price: string,
   tenantId: string,

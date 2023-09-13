@@ -4,6 +4,7 @@ export interface Meeting {
   desc: string,
   link: string,
   location: string,
+  address?: string,
   duration: string,
   name: string,
   price: number,

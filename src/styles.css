@@ -5,6 +5,10 @@ html, body {
   padding: 0;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+  color: #616161;
+}
+
 /*General styles*/
 .btn, .form-control, .form-select {
   border-radius: 0;
@@ -34,7 +38,7 @@ html, body {
   color: #1050a5!important;
 }
 
-.nav-item .nav-link {
+header .nav-item .nav-link {
   color: #1050a5!important;
   font-weight: 400;
   text-decoration: none;
@@ -43,12 +47,17 @@ html, body {
   border-radius: 0;
 }
 
-.nav-item .nav-link:hover {
+header .nav-item .nav-link:hover {
   color: #fff!important;
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
   background: #1050a5;
+}
+
+#settingsTab li a, #scheduledMeetings li a {
+  color: #1050a5;
+  margin-right: 20px;
 }
 
 .card {

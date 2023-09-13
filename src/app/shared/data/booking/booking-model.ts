@@ -11,5 +11,6 @@ export interface Booking {
   message: string,
   tenantId: string,
   completed: boolean,
-  meetingType: string
+  meetingType: string,
+  location?: string,
 }
