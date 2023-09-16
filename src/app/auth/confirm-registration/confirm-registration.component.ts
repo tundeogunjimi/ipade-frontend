@@ -22,7 +22,7 @@ export class ConfirmRegistrationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.confirmationToken = this.activatedRoute.snapshot.queryParams['confirmation_token']
+    this.confirmationToken = this.activatedRoute.snapshot.queryParams['token']
     const queryParams = this.activatedRoute.snapshot.queryParams
 
     if(this.confirmationToken) {

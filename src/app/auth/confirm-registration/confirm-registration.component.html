@@ -6,8 +6,9 @@
         <p>{{ confirmationMessage | titlecase }}</p>
       </ng-container>
       <ng-container *ngIf="isConfirmed">
-        <h4 class="text-success">Registration confirmed!</h4>
-        <a class="btn btn-success" routerLink="/auth/login">Login</a>
+        <h4 class="text-primary">Success!</h4>
+        <p class="lead fw-medium">Your account has been confirmed!</p>
+        <a class="btn btn-primary" routerLink="/auth/login">Click here to login</a>
       </ng-container>
     </div>
   </div>
