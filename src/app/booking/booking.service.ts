@@ -19,19 +19,19 @@ export class BookingService {
   constructor(private http: HttpClient) { }
 
   createBooking(booking: Booking): Observable<Booking> {
-    return this.http.post<Booking>(`${this.baseUrl}/booking/`, JSON.stringify(booking), { headers: this.headers})
+    return this.http.post<Booking>(`${this.baseUrl}/booking`, JSON.stringify(booking), { headers: this.headers})
   }
 
-  getAllBooking(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`${this.baseUrl}/booking?tenantId=123456&email=tundeogunjimi@gmail.com`, { headers: this.headers })
+  getAllBooking(tenantId: string, email: string): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.baseUrl}/booking?tenantId=${tenantId}&email=${email}`, { headers: this.headers })
   }
 
-  getBooking(id: string): Observable<Booking> {
-    return this.http.get<Booking>(`${this.baseUrl}/booking/${id}?tenantId=123456`, { headers: this.headers })
+  getBooking(id: string, tenantId): Observable<Booking> {
+    return this.http.get<Booking>(`${this.baseUrl}/booking/${id}?tenantId=${tenantId}`, { headers: this.headers })
   }
 
   updateBooking(booking: Booking, id: string): Observable<Booking> {
-    return this.http.put<Booking>(`${this.baseUrl}/booking/${id}?tenantId=123456`, JSON.stringify(booking), { headers: this.headers})
+    return this.http.put<Booking>(`${this.baseUrl}/booking/${id}?tenantId=${booking.tenantId}`, JSON.stringify(booking), { headers: this.headers})
   }
 
   deleteBooking(id: string) {}

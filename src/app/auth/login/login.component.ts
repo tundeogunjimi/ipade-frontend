@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 import {take} from "rxjs";
@@ -13,6 +13,7 @@ import {MessageService} from "primeng/api";
 export class LoginComponent implements OnInit {
 
   public loginForm!: FormGroup
+  isSubmitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
     private messageService: MessageService
   ) {}
   ngOnInit(): void {
+    this.isSubmitted = false
     const isLoggedIn = this.authService.isLoggedIn()
     if(isLoggedIn) {
       this.router.navigate(['/profile'])
@@ -30,7 +32,6 @@ export class LoginComponent implements OnInit {
 
   createLoginForm(): void {
     this.loginForm = this.fb.group({
-      name: [''],
       email: [''],
       password: ['']
     })
@@ -48,11 +49,13 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res)
+          this.isSubmitted = true
           localStorage.setItem('user', JSON.stringify(res))
           this.router.navigate(['/profile'])
         },
         error: (e) => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: e.error.message });
+          this.isSubmitted = false
           console.log(e.error.message)
         }
       })

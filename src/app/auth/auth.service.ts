@@ -33,6 +33,18 @@ export class AuthService {
     return this.http.get<any>(`${this.baseUrl}/confirm`, { headers: this.headers, params: queryParams })
   }
 
+  updateProfile(user: User): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/update`, JSON.stringify(user), { headers: this.headers})
+  }
+
+  uploadProfilePicture(profileData): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/upload`, JSON.stringify(profileData), { headers: this.headers})
+  }
+
+  deleteProfile(user: User): Observable<User> {
+    return this.http.delete<User>(`${this.baseUrl}/delete?id=${user.id}&email=${user.email}`,  { headers: this.headers})
+  }
+
   getAuthToken(): string {
     const token = (JSON.parse(localStorage.getItem('user'))).token
     if (!token) {

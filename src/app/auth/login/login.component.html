@@ -25,7 +25,14 @@
             formControlName="password"
           >
         </div>
-        <button type="submit" class="btn btn-primary" (click)="login()">Submit</button>
+        <div class="mb-3 mt-3 text-end">
+          <button type="submit" class="btn btn-primary" (click)="login()">
+            <!--<span *ngIf="isSubmitted">
+              <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem"></i>
+            </span>-->
+            Submit
+          </button>
+        </div>
       </form>
 
       <div class="row mt-3">

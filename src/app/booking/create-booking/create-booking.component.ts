@@ -18,13 +18,16 @@ export class CreateBookingComponent implements OnInit {
 
   public bookingForm: FormGroup
   public bookingId: string
+  public meetingId: string
+  public tenantId: string
+  public tenantName: string = ''
+  private tenantUrl: string
   public formErrors: FormError
-
-  public time: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   public slicedTime: any[]
   public selectedTime: string
   public meeting: Meeting
-  public user: any
+  public minDate: Date = new Date()
+  public defaultDate: Date
 
   constructor(
     private fb: FormBuilder,
@@ -36,11 +39,12 @@ export class CreateBookingComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.createBookingForm()
-    this.bookingId = this.activatedRoute.snapshot.params['id']
-    const meetingId = this.activatedRoute.snapshot.queryParams['meetingId']
-    this.user = JSON.parse(localStorage.getItem(`user`))
+    this.bookingId = this.activatedRoute.snapshot.params['id'] // for editing booking
+    this.tenantId = this.activatedRoute.snapshot.queryParams['tenantId']
+    this.meetingId = this.activatedRoute.snapshot.queryParams['meetingId']
 
-    this.getMeeting(meetingId, this.user._id)
+    this.getMeeting(this.meetingId, this.tenantId)
+
     if (this.bookingId) {
       this.populateBookingForm(this.bookingId)
     }
@@ -52,7 +56,8 @@ export class CreateBookingComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.meeting = res
-          console.log(`meeting>>> `, res)
+          const tenantNameArr = (this.meeting.link.split('/')[1]).split('-')
+          this.tenantName = `${tenantNameArr[0]} ${tenantNameArr[1]}`
         },
         error: (e) => {
           console.log(`error: `, e.error.message)
@@ -76,53 +81,69 @@ export class CreateBookingComponent implements OnInit {
   saveBooking(): void {
     this.formErrors = {}
     const formValue = this.bookingForm.getRawValue() //todo: trim name & email
-    const booking: Booking = {
+
+    const booking: Booking = { // todo: add meetingId to fetch required details on next screen
       date: formValue.date,
-      time: this.selectedTime,
+      time: this.selectedTime || formValue.t,
       completed: false,
       email: formValue.email,
-      gender: formValue.gender,
-      meetingType: '30 minute meeting',
+      // gender: formValue.gender,
+      meetingType: this.meeting.name,
       message: formValue.message,
-      mobile: formValue.mobile,
+      // mobile: formValue.mobile,
       name: formValue.name,
-      purpose: formValue.purpose,
-      status: formValue.status,
-      tenantId: '123456' // todo: fetch tenantId from query params
+      // purpose: formValue.purpose,
+      // status: formValue.status,
+      tenantId: this.tenantId
+    }
+
+    const extras = {
+      queryParams: {
+        id: this.bookingId,
+        meetingId: this.meetingId,
+        tenantId: this.tenantId
+      },
+      tenantUrl: this.meeting.link,
     }
 
     if (!this.bookingId) {
-      this.createBooking(booking)
+      this.createBooking(booking, extras)
     } else {
-      this.updateBooking(booking)
+      this.updateBooking(booking, extras)
     }
 
   }
 
-  createBooking(booking: Booking) {
-    console.log(`creating new booking...`)
+  createBooking(booking: Booking, extras: any) {
     this.bookingService.createBooking(booking)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
-          console.log('booking created successfully')
-          this.router.navigate([`/booking/booking-details/${res._id}`])
+          console.log('booking created successfully', res)
+          extras.queryParams.id = res._id
+          sessionStorage.setItem(`ipadeExtras`, JSON.stringify(extras))
+          this.router.navigate([`/booking/booking-details${this.meeting.link}`],
+            { queryParams: extras.queryParams }
+          )
         },
         error: (e) => {
           this.formErrors = e.error
-          console.log(e)
+          console.log(`error >>> `, e.error)
         }
       })
   }
 
-  updateBooking(booking) {
+  updateBooking(booking, extras: any) {
     console.log(`updating booking with id: `, this.bookingId)
     this.bookingService.updateBooking(booking, this.bookingId)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
           console.log(`booking with id ${this.bookingId} successfully updated!`)
-          this.router.navigate([`/booking/booking-details/${res._id}`])
+
+          this.router.navigate([`/booking/booking-details${this.meeting.link}`],
+            { queryParams: extras.queryParams }
+          )
         },
         error: (e) => {
           console.log(e.error)
@@ -132,32 +153,39 @@ export class CreateBookingComponent implements OnInit {
   }
 
   populateBookingForm(id: string): void {
-    this.bookingService.getBooking(id)
+    this.bookingService.getBooking(id, this.tenantId)
       .pipe(take(1))
       .subscribe((booking) => {
+
+        this.selectedTime = booking.time
+        this.defaultDate = new Date(booking.date)
+        this.sliceTime()
+        this.selectTime(this.selectedTime)
+
+        console.log(`booking date >>>`, this.defaultDate)
         this.bookingForm.patchValue({
           date: booking.date,
           time: this.selectedTime,
           completed: false,
           email: booking.email,
-          gender: booking.gender,
-          meetingType: '30 minute meeting',
+          // gender: booking.gender,
+          meetingType: booking.meetingType,
           message: booking.message,
-          mobile: booking.mobile,
+          // mobile: booking.mobile,
           name: booking.name,
-          purpose: booking.purpose,
+          // purpose: booking.purpose,
           status: booking.status,
-          tenantId: '123456' // todo: fetch tenantId from query params
+          tenantId: this.tenantId
         })
       })
   }
 
   sliceTime(): void {
-    const eventDate = this.bookingForm.getRawValue().date;
+    const eventDate = this.bookingForm.getRawValue().date || this.defaultDate;
     console.log(`event from p-calendar >>>`, eventDate)
     let start = new Date(eventDate); // format: new Date("2016-05-04T00:00:00.000Z");
-    start.setHours(0,0,0,0)
-    let end = new Date(start.getTime() + (24 * 60 * 60 * 1000));
+    start.setHours(7,0,0,0)
+    let end = new Date(start.getTime() + (12 * 60 * 60 * 1000));
 
     let slices = [];
     let count = 0;
@@ -174,6 +202,11 @@ export class CreateBookingComponent implements OnInit {
   selectTime(time: string): void {
     this.selectedTime = time;
   }
+
+  formatTime(time: string): number {
+    return new Date(time).getTime()
+  }
+
 }
 
 interface FormError {

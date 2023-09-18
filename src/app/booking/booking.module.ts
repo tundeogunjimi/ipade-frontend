@@ -6,6 +6,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { MakePaymentComponent } from './make-payment/make-payment.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 import {CalendarModule} from "primeng/calendar";
+import {ScrollPanelModule} from "primeng/scrollpanel";
 
 
 
@@ -19,7 +20,8 @@ import {CalendarModule} from "primeng/calendar";
         CommonModule,
         BookingRoutingModule,
         ReactiveFormsModule,
-        CalendarModule
+        CalendarModule,
+        ScrollPanelModule
     ]
 })
 export class BookingModule { }

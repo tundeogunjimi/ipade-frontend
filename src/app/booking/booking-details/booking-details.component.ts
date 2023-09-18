@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Booking} from "../../shared/data/booking/booking-model";
 import {BookingService} from "../booking.service";
 import {take} from "rxjs";
+import {MeetingService} from "../../meeting-type/meeting.service";
+import {Meeting} from "../../shared/data/meeting/meeting";
 
 @Component({
   selector: 'app-booking-details',
@@ -12,32 +14,51 @@ import {take} from "rxjs";
 export class BookingDetailsComponent implements OnInit{
 
   public booking: Booking;
+  public meeting: Meeting
+  private meetingId: string
+  private bookingId: string
+  private tenantId:string
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private meetingService: MeetingService,
   ) {
   }
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.params['id']
-    this.bookingService.getBooking(id)
+    const tenantUrl = this.activatedRoute.snapshot.params['id']
+    this.bookingId = this.activatedRoute.snapshot.queryParams['id']
+    this.tenantId = this.activatedRoute.snapshot.queryParams['tenantId']
+    this.meetingId = this.activatedRoute.snapshot.queryParams['meetingId']
+
+    this.bookingService.getBooking(this.bookingId, this.tenantId)
       .pipe(take(1))
       .subscribe((res) => {
         this.booking = res
-        sessionStorage.setItem('booking_id', id)
+        sessionStorage.setItem('booking_id', this.bookingId)
+      })
+
+    this.meetingService.getMeeting(this.meetingId, this.tenantId)
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.meeting = res
+        }
       })
   }
 
   goBack(): void {
-    this.router.navigate([`/booking/edit-booking/${this.booking._id}`])
+    this.router.navigate([`/booking/edit-booking${this.meeting.link}/${this.booking._id}`], {
+      queryParams: { bookingId: this.bookingId, meetingId: this.meetingId, tenantId: this.tenantId }
+    })
   }
 
   proceedToPayment(): void {
     const transaction = { // todo: fetch these from tenant params
       tx_ref: "",
-      amount: "100",
+      amount: this.meeting.price,
       currency: "NGN",
       redirect_url: "http://localhost:4200/booking/make-payment", // todo: set dynamically for dev & prod
       meta: { // todo: decide what include here

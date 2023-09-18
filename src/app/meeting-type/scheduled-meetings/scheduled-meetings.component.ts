@@ -39,7 +39,7 @@ export class ScheduledMeetingsComponent implements OnInit{
   }
 
   getBookings(user: User): void {
-    this.bookingService.getAllBooking()
+    this.bookingService.getAllBooking(user.id, user.email)
       .pipe(take(1))
       .subscribe({
         next: (res) => {

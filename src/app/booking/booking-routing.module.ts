@@ -6,8 +6,8 @@ import {MakePaymentComponent} from "./make-payment/make-payment.component";
 import {BookingDetailsComponent} from "./booking-details/booking-details.component";
 
 const routes: Routes = [
-  { path: 'new-booking', component: CreateBookingComponent },
-  { path: 'edit-booking/:id', component: CreateBookingComponent },
+  { path: 'new/:url', component: CreateBookingComponent },
+  { path: 'edit-booking/:url/:id', component: CreateBookingComponent },
   { path: 'booking-details/:id', component: BookingDetailsComponent },
   { path: 'make-payment', component: MakePaymentComponent },
 

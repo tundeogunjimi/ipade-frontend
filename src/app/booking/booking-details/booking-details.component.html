@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <div class="col-sm-8 offset-sm-2 border p-3">
+  <div class="col-sm-10 offset-sm-1 border p-3">
     <p class="lead fw-medium text-primary">Booking Details</p>
 
     <table class="table table-bordered">
@@ -7,7 +7,7 @@
       <tr>
         <td><span class="fw-medium">Invoice no:</span> 123456789AB</td>
         <td><span class="fw-medium">Name:</span> {{ booking?.name }}</td>
-        <td><span class="fw-medium">Payment status:</span> PENDING (NGN20,100)</td>
+        <td><span class="fw-medium">Payment status:</span> PENDING ({{ meeting?.price | currency: 'N' }})</td>
       </tr>
       <tr>
         <td><span class="fw-medium">Email:</span> {{ booking?.email }}</td>
