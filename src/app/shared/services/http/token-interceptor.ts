@@ -15,6 +15,7 @@ export class TokenInterceptor implements HttpInterceptor {
       `/login`,
       `/confirm-registration`,
       `/booking`,
+      `/meeting`,
       `/confirm`
     ];
 

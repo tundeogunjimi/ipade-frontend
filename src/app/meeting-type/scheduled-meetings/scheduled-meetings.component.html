@@ -11,11 +11,12 @@
             role="tab"
             aria-controls="upcoming-meetings"
             aria-selected="true"
+            (click)="fetchPendingMeetings()"
           >
             Upcoming
           </a>
         </li>
-        <li class="nav-item" role="presentation">
+        <!--<li class="nav-item" role="presentation">
           <a
             class="nav-link"
             id="pending-meetings-tab"
@@ -24,10 +25,11 @@
             role="tab"
             aria-controls="pending-meetings"
             aria-selected="false"
+            (click)="fetchPendingMeetings()"
           >
             Pending
           </a>
-        </li>
+        </li>-->
         <li class="nav-item" role="presentation">
           <a
             class="nav-link"
@@ -37,6 +39,7 @@
             role="tab"
             aria-controls="past-meetings"
             aria-selected="false"
+            (click)="fetchPastMeetings()"
           >
             Past
           </a>
@@ -50,6 +53,7 @@
             role="tab"
             aria-controls="date-range-meetings"
             aria-selected="false"
+            (click)="setDateRange()"
           >
             Date Range
           </a>
@@ -59,50 +63,41 @@
       <div class="tab-content my-4" id="scheduledMeetingsContent">
 
         <div class="tab-pane fade show active" id="upcoming-meetings" role="tabpanel" aria-labelledby="upcoming-meetings-tab">
-          <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Time</th>
-              <th scope="col">Email</th>
-              <th scope="col">Location</th>
-              <th scope="col">Message</th>
-              <th scope="col">Meeting Type</th>
-              <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let booking of bookings">
-              <td>{{ booking?.date | date }}</td>
-              <td>{{ booking?.date | date: 'shortTime'}}</td>
-              <td>{{ booking?.email }}</td>
-              <td><!--{{ booking?.location }}--></td>
-              <td>{{ booking?.message }}</td>
-              <td>{{ booking?.meetingType }}</td>
-              <td>
-                <i class="pi pi-pencil text-success me-3"></i>
-                <i class="pi pi-times text-danger"></i>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+          <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
         </div>
 
-        <div class="tab-pane fade" id="pending-meetings" role="tabpanel" aria-labelledby="pending-meetings-tab">
+        <!--<div class="tab-pane fade" id="pending-meetings" role="tabpanel" aria-labelledby="pending-meetings-tab">
           <div class="row">
             pending meetings
           </div>
-        </div>
+        </div>-->
 
         <div class="tab-pane fade" id="past-meetings" role="tabpanel" aria-labelledby="past-meetings-tab">
-          <div class="row">
-            past meetings
-          </div>
+          <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
         </div>
 
         <div class="tab-pane fade" id="date-range-meetings" role="tabpanel" aria-labelledby="date-range-meetings-tab">
           <div class="row">
-            date-range meetings
+            <form [formGroup]="dateForm" class="row g-3">
+              <div class="col-auto">
+                <label for="dateRange" class="col-form-label fw-medium">Select date range:</label>
+              </div>
+              <div class="col-auto">
+                <label for="dateRange" class="visually-hidden">Password</label>
+                <p-calendar
+                  formControlName="dateRange"
+                  selectionMode="range"
+                  id="dateRange"
+                  [readonlyInput]="true"
+                ></p-calendar>
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" (click)="setDateRange()">GO!</button>
+              </div>
+            </form>
+          </div>
+          <div class="row">
+            <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
           </div>
         </div>
 

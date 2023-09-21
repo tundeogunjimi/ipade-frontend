@@ -26,7 +26,7 @@ import {ToastModule} from "primeng/toast";
     BookingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastModule
+    ToastModule,
   ],
   providers: [
     {

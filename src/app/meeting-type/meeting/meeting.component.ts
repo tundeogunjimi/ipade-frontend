@@ -1,11 +1,12 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {User} from "../../shared/data/auth/user-model";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {Form, FormBuilder, FormGroup} from "@angular/forms";
 import {Meeting} from "../../shared/data/meeting/meeting";
 import {MeetingService} from "../meeting.service";
 import {pipe, take} from "rxjs";
 import {MessageService} from "primeng/api";
+import {ShareChannel} from "../../shared/data/meeting/share-channel";
 
 @Component({
   selector: 'app-meeting',
@@ -14,6 +15,7 @@ import {MessageService} from "primeng/api";
 })
 export class MeetingComponent implements OnInit{
 
+  public shareLinkForm: FormGroup
   public currentUser: User;
   public meetingType: string = 'paid'
   private username: string
@@ -29,6 +31,18 @@ export class MeetingComponent implements OnInit{
     { name: 'Online', value: 'online'},
   ]
 
+  public selectedChannel: ShareChannel;
+  public shareChannels: ShareChannel[] = [
+    {name: 'Email', label: 'Email address: e.g. johndoe@example.com', iconLink: 'pi-envelope', iconClass: 'primary' },
+    {name: 'Whatsapp', label: 'Whatsapp number: e.g. +2348060911000', iconLink: 'pi-whatsapp', iconClass: 'success'},
+    {name: 'SMS', label: 'Mobile number: e.g. +23480622811000', iconLink: 'pi-tablet', iconClass: ''},
+  ]
+
+  public copyText: string = 'Copy link'
+  public baseUrl: string = `http://localhost:4200/booking/new`
+  public shareUrl: string
+
+
   constructor(
     private authService: AuthService,
     private meetingService: MeetingService,
@@ -41,7 +55,15 @@ export class MeetingComponent implements OnInit{
   ngOnInit(): void {
     this.fetchUserDetails()
     this.createMeetingForm()
+    this.createShareLinkForm()
     this.initializeFormErrors()
+
+    if (localStorage.getItem('reload') && this.authService.isLoggedIn()) {
+      localStorage.removeItem('reload')
+      window.location.reload()
+    } else {
+      localStorage.setItem('reload', 'true')
+    }
   }
 
   getMeetings(tenantId: string): void {
@@ -79,6 +101,12 @@ export class MeetingComponent implements OnInit{
     })
   }
 
+  createShareLinkForm(): void {
+    this.shareLinkForm = this.fb.group({
+      contact: ['']
+    })
+  }
+
   fetchUserDetails() {
     this.authService.fetchUserDetails()
       .subscribe({
@@ -104,14 +132,13 @@ export class MeetingComponent implements OnInit{
     console.log(`selected event`, meeting)
   }
 
-  createUrl() {
+  /*createUrl() {
     const meetingName = ((this.meetingForm.getRawValue().name).split(" ").join("-")).trim()
-    const link = (`/${this.username}/${meetingName}`).toLowerCase()
+    const link = (this.username).toLowerCase()
     this.meetingForm.patchValue({
       link
     })
-    console.log(`create url >>>`, link)
-  }
+  }*/
 
   createMeeting(): void {
     const formValues = this.meetingForm.getRawValue()
@@ -124,7 +151,7 @@ export class MeetingComponent implements OnInit{
     const meeting: Meeting = {
       dateRange: dateRange,
       desc: formValues.desc,
-      link: formValues.link,
+      link: (this.username).toLowerCase(),
       location: formValues.location,
       address: formValues.address,
       duration: formValues.duration,
@@ -241,6 +268,70 @@ export class MeetingComponent implements OnInit{
     const location = this.meetingForm.getRawValue().location
     this.shouldShowAddressField = location === 'in-person';
   }
+
+  copyLink(): void {
+    this.copyText = `Copied`
+    const url = this.generateShareUrl()
+    navigator.clipboard.writeText(url)
+  }
+
+  resetCopyText(): void {
+    this.copyText = `Copy link`
+    this.cdr.detectChanges()
+  }
+
+  selectChannel(channel: ShareChannel) {
+    this.shareChannels.forEach((item) => {
+      item.isSelected = item.name === channel.name;
+    })
+    this.selectedChannel = channel
+  }
+
+  shareLink() {
+    const contact = this.shareLinkForm.getRawValue().contact
+
+    const link = this.generateShareUrl()
+    const sharePayload = {
+      link,
+      channel: (this.selectedChannel.name).toLowerCase(),
+      meetingName: this.selectedMeeting.name,
+      tenantName: (this.currentUser.name).toUpperCase(),
+      tenantId: this.selectedMeeting.tenantId,
+      receiverName: '',
+      receiverEmail: contact,
+    }
+    // console.log(`payload >>>`, sharePayload)
+    this.shareViaEmail(sharePayload)
+  }
+
+  shareViaEmail(sharePayload): void {
+    this.meetingService.shareLinkViaEmail(sharePayload)
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Link successfully shared'
+          })
+        },
+        error: (e) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error sharing link',
+            detail: e.error.message
+          })
+          this.formErrors = e.error
+          console.log(`meeting delete failed`, e.error.message)
+        }
+      })
+  }
+
+  generateShareUrl(): string {
+    this.shareUrl = `${this.baseUrl}/${this.selectedMeeting.link}?id=${this.selectedMeeting._id}&meetingId=${this.selectedMeeting._id}&tenantId=${this.selectedMeeting.tenantId}`
+    return this.shareUrl
+  }
+
 }
 
 interface FormError {

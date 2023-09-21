@@ -30,6 +30,14 @@ export class ProfileComponent implements OnInit {
     const isLoggedIn = this.authService.isLoggedIn()
     if (!isLoggedIn) this.router.navigate(['/'])
     this.createProfileForm()
+
+    if (localStorage.getItem('reload') && isLoggedIn) {
+      localStorage.removeItem('reload')
+      window.location.reload()
+    } else {
+      localStorage.setItem('reload', 'true')
+    }
+
   }
 
   createProfileForm(): void {

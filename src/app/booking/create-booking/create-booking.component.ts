@@ -56,7 +56,7 @@ export class CreateBookingComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.meeting = res
-          const tenantNameArr = (this.meeting.link.split('/')[1]).split('-')
+          const tenantNameArr = (this.meeting.link.split('-'))
           this.tenantName = `${tenantNameArr[0]} ${tenantNameArr[1]}`
         },
         error: (e) => {
@@ -122,7 +122,7 @@ export class CreateBookingComponent implements OnInit {
           console.log('booking created successfully', res)
           extras.queryParams.id = res._id
           sessionStorage.setItem(`ipadeExtras`, JSON.stringify(extras))
-          this.router.navigate([`/booking/booking-details${this.meeting.link}`],
+          this.router.navigate([`/booking/booking-details/${this.meeting.link}`],
             { queryParams: extras.queryParams }
           )
         },
@@ -141,7 +141,7 @@ export class CreateBookingComponent implements OnInit {
         next: (res) => {
           console.log(`booking with id ${this.bookingId} successfully updated!`)
 
-          this.router.navigate([`/booking/booking-details${this.meeting.link}`],
+          this.router.navigate([`/booking/booking-details/${this.meeting.link}`],
             { queryParams: extras.queryParams }
           )
         },
@@ -159,7 +159,7 @@ export class CreateBookingComponent implements OnInit {
 
         this.selectedTime = booking.time
         this.defaultDate = new Date(booking.date)
-        this.sliceTime()
+        this.sliceTime(this.meeting.duration)
         this.selectTime(this.selectedTime)
 
         console.log(`booking date >>>`, this.defaultDate)
@@ -180,19 +180,18 @@ export class CreateBookingComponent implements OnInit {
       })
   }
 
-  sliceTime(): void {
+  sliceTime(duration): void {
     const eventDate = this.bookingForm.getRawValue().date || this.defaultDate;
-    console.log(`event from p-calendar >>>`, eventDate)
     let start = new Date(eventDate); // format: new Date("2016-05-04T00:00:00.000Z");
     start.setHours(7,0,0,0)
-    let end = new Date(start.getTime() + (12 * 60 * 60 * 1000));
+    let end = new Date(start.getTime() + (12 * 60 * 60 * 1000)); // use meeting time
 
     let slices = [];
     let count = 0;
 
     while (end >= start) {
       slices[count] = start;
-      start = new Date(start.getTime() + (30 * 60 * 1000));
+      start = new Date(start.getTime() + (duration * 60 * 1000));
       count++;
     }
 

@@ -9,14 +9,18 @@ import {CalendarModule} from "primeng/calendar";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { ScheduledMeetingsComponent } from './scheduled-meetings/scheduled-meetings.component';
+import { MeetingListComponent } from './scheduled-meetings/meeting-list/meeting-list.component';
+import {CopyClipboardDirective} from "../shared/directives/copy-clipboard-directive";
 
 
 @NgModule({
-  declarations: [
-    PaidMeetingComponent,
-    MeetingComponent,
-    ScheduledMeetingsComponent
-  ],
+    declarations: [
+        PaidMeetingComponent,
+        MeetingComponent,
+        ScheduledMeetingsComponent,
+        MeetingListComponent,
+        CopyClipboardDirective
+    ],
     imports: [
         CommonModule,
         MeetingTypeRoutingModule,

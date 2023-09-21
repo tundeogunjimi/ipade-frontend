@@ -23,7 +23,7 @@ export class MeetingService {
   }
 
   getMeeting(meetingId: string, tenantId: string): Observable<Meeting> {
-    return this.http.get<Meeting>(`${this.baseUrl}/meeting/i/?meetingId=${meetingId}&tenantId=${tenantId}`, { headers: this.headers })
+    return this.http.get<Meeting>(`${this.baseUrl}/meeting/${meetingId}/?meetingId=${meetingId}&tenantId=${tenantId}` )
   }
 
   getMeetings(tenantId: string): Observable<Meeting[]> {
@@ -36,5 +36,10 @@ export class MeetingService {
 
   deleteMeeting(id: string): Observable<any> {
     return this.http.delete<Meeting>(`${this.baseUrl}/meeting/${id}`,{ headers: this.headers})
+  }
+
+  // email share
+  shareLinkViaEmail(sharePayload): Observable<Meeting> {
+    return this.http.post<Meeting>(`${this.baseUrl}/message/shareMeetingLink`, JSON.stringify(sharePayload), { headers: this.headers})
   }
 }

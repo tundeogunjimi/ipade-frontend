@@ -6,7 +6,7 @@
 
         <div class="col-md-5 col-sm-12">
           <div class="form-control border-0">
-            <p-calendar formControlName="date" [inline]="true" [minDate]="minDate" [defaultDate]="defaultDate" (click)="sliceTime()"></p-calendar>
+            <p-calendar formControlName="date" [inline]="true" [minDate]="minDate" [defaultDate]="defaultDate" (click)="sliceTime(meeting.duration)"></p-calendar>
             <div class="text-danger" *ngIf="formErrors?.date">{{ formErrors?.date }}</div>
             <span *ngIf="defaultDate">{{ defaultDate | date: 'shortDate' }}</span>
           </div>

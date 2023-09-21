@@ -14,12 +14,15 @@
   padding: 0.5rem;
 }
 
-.action-icons i {
-  margin-right: 1rem;
-  padding: 0.5rem;
+#shareChannel {
+  padding: 10px;
+  cursor: pointer;
 }
 
-.action-icons i:hover {
-  margin-right: 1rem;
-  background: #eee;
+#shareChannel:hover, #shareChannel.active {
+  border: solid 1px gray;
+  background: lightgray;
+  border-radius: 5px;
+  padding: 12px;
+  transition: padding 0.5s;
 }

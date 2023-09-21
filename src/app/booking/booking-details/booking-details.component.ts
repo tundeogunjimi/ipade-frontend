@@ -50,7 +50,7 @@ export class BookingDetailsComponent implements OnInit{
   }
 
   goBack(): void {
-    this.router.navigate([`/booking/edit-booking${this.meeting.link}/${this.booking._id}`], {
+    this.router.navigate([`/booking/edit-booking/${this.meeting.link}/${this.booking._id}`], {
       queryParams: { bookingId: this.bookingId, meetingId: this.meetingId, tenantId: this.tenantId }
     })
   }
