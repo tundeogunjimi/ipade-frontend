@@ -1,5 +1,5 @@
 export interface Booking {
-  _id?: string,
+  id?: string,
   name: string,
   email: string,
   gender?: string,
@@ -13,4 +13,12 @@ export interface Booking {
   completed: boolean,
   meetingType: string,
   location?: string,
+  extras?: {
+    queryParams: {
+      bookingId: string,
+      meetingId: string,
+      tenantId: string,
+    },
+    tenantUrl: string
+  }
 }

@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Booking} from "../../shared/data/booking/booking-model";
 import {BookingService} from "../booking.service";
 import {take} from "rxjs";
-import {MeetingService} from "../../meeting-type/meeting.service";
+import {MeetingService} from "../../meeting/meeting.service";
 import {Meeting} from "../../shared/data/meeting/meeting";
 
 @Component({
@@ -28,16 +28,19 @@ export class BookingDetailsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    const tenantUrl = this.activatedRoute.snapshot.params['id']
-    this.bookingId = this.activatedRoute.snapshot.queryParams['id']
+    // this.bookingId = this.activatedRoute.snapshot.queryParams['bookingId']
     this.tenantId = this.activatedRoute.snapshot.queryParams['tenantId']
     this.meetingId = this.activatedRoute.snapshot.queryParams['meetingId']
+
+    const extras = JSON.parse(sessionStorage.getItem(`ipadeExtras`))
+    console.log(`extras `, extras)
+
+    this.bookingId = extras.queryParams.bookingId
 
     this.bookingService.getBooking(this.bookingId, this.tenantId)
       .pipe(take(1))
       .subscribe((res) => {
         this.booking = res
-        sessionStorage.setItem('booking_id', this.bookingId)
       })
 
     this.meetingService.getMeeting(this.meetingId, this.tenantId)
@@ -50,20 +53,22 @@ export class BookingDetailsComponent implements OnInit{
   }
 
   goBack(): void {
-    this.router.navigate([`/booking/edit-booking/${this.meeting.link}/${this.booking._id}`], {
-      queryParams: { bookingId: this.bookingId, meetingId: this.meetingId, tenantId: this.tenantId }
+    this.router.navigate([`/booking/edit-booking/${this.meeting.link}/${this.booking.id}`], {
+      queryParams: { meetingId: this.meetingId, tenantId: this.tenantId }
     })
   }
 
   proceedToPayment(): void {
+    const queryParams = `bookingId=${this.bookingId}&meetingId=${this.meetingId}&tenantId=${this.tenantId}`
+
     const transaction = { // todo: fetch these from tenant params
       tx_ref: "",
       amount: this.meeting.price,
       currency: "NGN",
-      redirect_url: "http://localhost:4200/booking/make-payment", // todo: set dynamically for dev & prod
-      meta: { // todo: decide what include here
+      redirect_url: `http://localhost:4200/booking/make-payment?${queryParams}`, // todo: set dynamically for dev & prod
+      meta: {
         consumer_id: 23,
-        consumer_mac: "92a3-912ba-1192a"
+        consumer_mac: '92a3-912ba-1192a'
       },
       customer: {
         email: this.booking.email,
@@ -75,11 +80,11 @@ export class BookingDetailsComponent implements OnInit{
         logo: ""
       }
     }
-    this.bookingService.makePayment(transaction, this.booking._id)
+    this.bookingService.makePayment(transaction, this.booking.id)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
-          console.log(res)
+          console.log(`payment transaction details >>> `, res)
           window.location.href = res.payment_link.data.link
         },
         error: (e) => {console.log(e)}

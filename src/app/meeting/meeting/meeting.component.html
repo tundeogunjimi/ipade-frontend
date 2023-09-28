@@ -64,7 +64,7 @@
                           <div class="col-sm-12 pt-1 action-icons">
                             <span class="tooltip-action">
                               <span class="tooltiptext">Edit meeting</span>
-                              <i class="pi pi-pencil" (click)="selectMeeting(meeting)"></i>
+                              <i class="pi pi-pencil" (click)="selectMeeting(meeting, true)"></i>
                             </span>
 
                             <span class="tooltip-action">
@@ -102,7 +102,17 @@
                     </div>
                   </ng-container>
                   <ng-template #noMeetingFound>
-                    <p class="text-center mt-5">No meeting found...</p>
+                    <div class="card mb-2">
+                      <div class="card-body meeting-card">
+                        <div class="row">
+                          <p class="text-center my-5 fw-medium">
+                            You have not created any meeting. <br>
+                            Fill the form on the right to get started.
+                            <i class="pi pi-arrow-right" style="font-size: 2em"></i>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </ng-template>
                 </ng-container>
               </p-scrollPanel>
@@ -113,7 +123,7 @@
                 <div class="card">
                   <form [formGroup]="meetingForm" class="border p-3">
                     <div class="row">
-                      <div class="mb-3 col-md-8">
+                      <div class="mb-3 col-md-9">
                         <div class="text-danger" *ngIf="formErrors?.name">{{ formErrors?.name }}</div>
                         <label for="name" class="form-label">Meeting Name</label>
                         <input
@@ -124,7 +134,7 @@
                           (focusin)="clearError('name')"
                         >
                       </div>
-                      <div class=" mb-3 col-md-4">
+                      <div class=" mb-3 col-md-3">
                         <div class="text-danger" *ngIf="formErrors?.duration">{{ formErrors?.duration }}</div>
                         <label for="duration" class="form-label">Duration</label>
                         <select formControlName="duration" class="form-select" id="duration" aria-label="Default select example" (focusin)="clearError('duration')">
@@ -137,7 +147,7 @@
                         </select>
                       </div>
 
-                      <div class="mb-3 col-md-4">
+                      <div class="mb-3 col-md-3">
                         <div class="text-danger" *ngIf="formErrors?.location">{{ formErrors?.location }}</div>
                         <label for="desc" class="form-label">Location</label>
                         <select
@@ -151,7 +161,7 @@
                           <option *ngFor="let location of locations" [value]="location.value">{{ location.name }}</option>
                         </select>
                       </div>
-                      <div class="mb-3 col-md-4">
+                      <div class="mb-3 col-md-3">
                         <div class="text-danger" *ngIf="formErrors?.dateRange">{{ formErrors?.dateRange }}</div>
                         <label for="date-range" class="form-label">Date Range</label>
                         <p-calendar
@@ -163,6 +173,38 @@
                         ></p-calendar>
                       </div>
                       <div class="mb-3 col-md-4">
+                        <label for="time" class="form-label">Working hours</label>
+                        <div class="row" id="time">
+                          <div class="col-sm-6 p-float-label">
+                            <div class="text-danger" *ngIf="formErrors?.resumptionTime">{{ formErrors?.resumptionTime }}</div>
+                            <p-calendar
+                              formControlName="resumptionTime"
+                              id="resumptionTime"
+                              [readonlyInput]="true"
+                              [showTime]="true"
+                              [timeOnly]="true"
+                              hourFormat="12"
+                              (focusin)="clearError('resumptionTime')"
+                            ></p-calendar>
+                            <label for="resumptionTime" class="ps-2">From</label>
+                          </div>
+                          <div class="col-sm-6 p-float-label">
+                            <div class="text-danger" *ngIf="formErrors?.closingTime">{{ formErrors?.closingTime }}</div>
+                            <p-calendar
+                              formControlName="closingTime"
+                              id="closingTime"
+                              [readonlyInput]="true"
+                              [showTime]="true"
+                              [timeOnly]="true"
+                              hourFormat="12"
+                              (focusin)="clearError('closingTime')"
+                            ></p-calendar>
+                            <label for="closingTime" class="ps-2">To</label>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="mb-3 col-md-2">
                         <div class="text-danger" *ngIf="formErrors?.price">{{ formErrors?.price }}</div>
                         <label for="amount" class="form-label">Price</label>
                         <input formControlName="price" type="number" class="form-control" id="amount" placeholder="" (focusin)="clearError('price')">

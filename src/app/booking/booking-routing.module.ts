@@ -7,7 +7,7 @@ import {BookingDetailsComponent} from "./booking-details/booking-details.compone
 
 const routes: Routes = [
   { path: 'new/:url', component: CreateBookingComponent },
-  { path: 'edit-booking/:url/:id', component: CreateBookingComponent },
+  { path: 'edit-booking/:url/:bookingId', component: CreateBookingComponent },
   { path: 'booking-details/:id', component: BookingDetailsComponent },
   { path: 'make-payment', component: MakePaymentComponent },
 

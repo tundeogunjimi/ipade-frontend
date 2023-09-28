@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MeetingTypeRoutingModule } from './meeting-type-routing.module';
-import { PaidMeetingComponent } from './paid-meeting/paid-meeting.component';
+import { MeetingRoutingModule } from './meeting-routing.module';
+import { TenantMeetingsComponent } from './tenant-meetings/tenant-meetings.component';
 import { MeetingComponent } from './meeting/meeting.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {CalendarModule} from "primeng/calendar";
@@ -11,23 +11,25 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { ScheduledMeetingsComponent } from './scheduled-meetings/scheduled-meetings.component';
 import { MeetingListComponent } from './scheduled-meetings/meeting-list/meeting-list.component';
 import {CopyClipboardDirective} from "../shared/directives/copy-clipboard-directive";
+import {TableModule} from "primeng/table";
 
 
 @NgModule({
     declarations: [
-        PaidMeetingComponent,
+        TenantMeetingsComponent,
         MeetingComponent,
         ScheduledMeetingsComponent,
         MeetingListComponent,
         CopyClipboardDirective
     ],
-    imports: [
-        CommonModule,
-        MeetingTypeRoutingModule,
-        ReactiveFormsModule,
-        CalendarModule,
-        ScrollPanelModule,
-        ProgressSpinnerModule
-    ]
+  imports: [
+    CommonModule,
+    MeetingRoutingModule,
+    ReactiveFormsModule,
+    CalendarModule,
+    ScrollPanelModule,
+    ProgressSpinnerModule,
+    TableModule
+  ]
 })
-export class MeetingTypeModule { }
+export class MeetingModule { }

@@ -34,7 +34,8 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       name: [''],
       email: [''],
-      password: ['']
+      password: [''],
+      accountType: ['']
     })
   }
 
@@ -43,7 +44,8 @@ export class RegisterComponent implements OnInit {
     const user: User = {
       name: formValues.name,
       email: formValues.email,
-      password: formValues.password
+      password: formValues.password,
+      accountType: formValues.accountType
     }
     console.log(`user to register >>>`, user)
 

@@ -8,6 +8,8 @@ export interface Meeting {
   duration: string,
   name: string,
   price: number,
+  resumptionTime: string,
+  closingTime: string,
   tenantId: string,
   isFree: boolean
 }

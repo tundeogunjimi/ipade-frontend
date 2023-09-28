@@ -6,9 +6,15 @@
 
         <div class="col-md-5 col-sm-12">
           <div class="form-control border-0">
-            <p-calendar formControlName="date" [inline]="true" [minDate]="minDate" [defaultDate]="defaultDate" (click)="sliceTime(meeting.duration)"></p-calendar>
+            <p-calendar
+              formControlName="date"
+              [inline]="true"
+              [minDate]="minDate"
+              [maxDate]="maxDate"
+              [defaultDate]="defaultDate"
+              (click)="sliceTime(meeting.duration)"
+            ></p-calendar>
             <div class="text-danger" *ngIf="formErrors?.date">{{ formErrors?.date }}</div>
-            <span *ngIf="defaultDate">{{ defaultDate | date: 'shortDate' }}</span>
           </div>
         </div>
 
@@ -69,43 +75,15 @@
 
         </div>
       </div>
-
-      <!--<div class="row mt-3">
-        <div class="co-sm-12 col-md-6 mt-3">
-          <input formControlName="mobile" type="text" class="form-control" placeholder="Mobile" aria-label="Mobile" required>
-          <div class="text-danger" *ngIf="formErrors?.mobile">{{ formErrors?.mobile }}</div>
-        </div>
-        <div class="col-sm-12 col-md-6 mt-3">
-          <input formControlName="purpose" type="text" class="form-control" placeholder="Location(dropdown, edit backend)" aria-label="Location">
-        </div>
-
-        <div class="col-sm-12 col-md-6">
-          <input formControlName="gender" type="radio" class="btn-check" value="male" id="option5" autocomplete="off" checked>
-          <label class="btn" for="option5">Male</label>
-
-          <input formControlName="gender" type="radio" class="btn-check" value="female" id="option6" autocomplete="off">
-          <label class="btn" for="option6">Female</label>
-
-          <input formControlName="gender" type="radio" class="btn-check" value="others" id="option7" autocomplete="off">
-          <label class="btn" for="option7">Others</label>
-        </div>
-      </div>-->
-
-      <!--<div class="row mt-3">
-        <div class="col-sm-12 col-md-6 mt-3">
-          &lt;!&ndash;<input formControlName="date" type="date" class="form-control" placeholder="Date" aria-label="Date">&ndash;&gt;
-
-        </div>
-        <div class="col-sm-12 col-md-6 mt-3">
-          <input formControlName="time" type="time" class="form-control" placeholder="Time" aria-label="Time">
-          <div class="text-danger" *ngIf="formErrors?.time">{{ formErrors?.time }}</div>
-        </div>
-
-      </div>-->
-
-
-
     </form>
 
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-sm-8 offset-sm-2">
+    <h3 class="text-primary">Testing calendar</h3>
+
+    <iframe src="https://calendar.google.com/calendar/embed?src=5106b82f254845c07d94113a96e8c589a560ef2af08e663b981e9b235034fca3%40group.calendar.google.com&ctz=Africa%2FLagos" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
   </div>
 </div>

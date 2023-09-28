@@ -42,7 +42,6 @@ export class MeetingComponent implements OnInit{
   public baseUrl: string = `http://localhost:4200/booking/new`
   public shareUrl: string
 
-
   constructor(
     private authService: AuthService,
     private meetingService: MeetingService,
@@ -84,7 +83,18 @@ export class MeetingComponent implements OnInit{
 
   initializeFormErrors() {
     this.formErrors = {
-      dateRange: "", desc: "", duration: "", isFree: "", link: "", location: "", name: "", price: "", tenantId: "", address: ""
+      dateRange: "",
+      desc: "",
+      duration: "",
+      isFree: "",
+      link: "",
+      location: "",
+      name: "",
+      price: "",
+      resumptionTime: "",
+      closingTime: "",
+      tenantId: "",
+      address: ""
     }
   }
 
@@ -96,6 +106,8 @@ export class MeetingComponent implements OnInit{
       address: [''],
       dateRange: [''],
       price: [''],
+      resumptionTime: [""],
+      closingTime: [""],
       desc: [''],
       link: ['']
     })
@@ -121,14 +133,18 @@ export class MeetingComponent implements OnInit{
         }
       })
   }
-  selectMeeting(meeting: Meeting) {
+  selectMeeting(meeting: Meeting, shouldPatchValue?: boolean) {
     this.selectedMeeting = meeting
     const dateRange = [new Date(meeting.dateRange.start), new Date(meeting.dateRange.end)]
-    this.meetingForm.patchValue({
-      ...meeting,
-      dateRange
-    })
-    this.saveButtonTxt = 'Update'
+    if (shouldPatchValue !== undefined) {
+      this.meetingForm.patchValue({
+        ...meeting,
+        dateRange,
+        resumptionTime: new Date(meeting.resumptionTime),
+        closingTime: new Date(meeting.closingTime),
+      })
+      this.saveButtonTxt = 'Update'
+    }
     console.log(`selected event`, meeting)
   }
 
@@ -157,6 +173,8 @@ export class MeetingComponent implements OnInit{
       duration: formValues.duration,
       name: formValues.name,
       price: formValues.price,
+      resumptionTime: formValues.resumptionTime,
+      closingTime: formValues.closingTime,
       tenantId: this.currentUser.id,
       isFree: false,
     }
@@ -328,7 +346,7 @@ export class MeetingComponent implements OnInit{
   }
 
   generateShareUrl(): string {
-    this.shareUrl = `${this.baseUrl}/${this.selectedMeeting.link}?id=${this.selectedMeeting._id}&meetingId=${this.selectedMeeting._id}&tenantId=${this.selectedMeeting.tenantId}`
+    this.shareUrl = `${this.baseUrl}/${this.selectedMeeting.link}?&meetingId=${this.selectedMeeting._id}&tenantId=${this.selectedMeeting.tenantId}`
     return this.shareUrl
   }
 
@@ -342,6 +360,8 @@ interface FormError {
   address?: string,
   name: string,
   price: string,
+  resumptionTime: string,
+  closingTime: string,
   tenantId: string,
   isFree: string
   duration: string

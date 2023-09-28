@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
           console.log(res)
           this.isSubmitted = true
           localStorage.setItem('user', JSON.stringify(res))
-          this.router.navigate(['/profile'])
+          this.router.navigate(['/meeting'])
         },
         error: (e) => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: e.error.message });

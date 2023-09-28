@@ -10,4 +10,8 @@ export class MeetingListComponent {
 
   @Input() filteredBookings: Booking[]
 
+  editBooking(booking: Booking) {
+    console.log(`booking to edit >>> `, booking)
+
+  }
 }

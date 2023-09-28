@@ -5,9 +5,8 @@ import {AuthService} from "../../auth/auth.service";
 import {Booking} from "../../shared/data/booking/booking-model";
 import {BookingService} from "../booking.service";
 import {take} from "rxjs";
-import {MeetingService} from "../../meeting-type/meeting.service";
+import {MeetingService} from "../../meeting/meeting.service";
 import {Meeting} from "../../shared/data/meeting/meeting";
-import {User} from "../../shared/data/auth/user-model";
 
 @Component({
   selector: 'app-create-booking',
@@ -26,7 +25,8 @@ export class CreateBookingComponent implements OnInit {
   public slicedTime: any[]
   public selectedTime: string
   public meeting: Meeting
-  public minDate: Date = new Date()
+  public minDate: Date
+  public maxDate: Date
   public defaultDate: Date
 
   constructor(
@@ -39,9 +39,10 @@ export class CreateBookingComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.createBookingForm()
-    this.bookingId = this.activatedRoute.snapshot.params['id'] // for editing booking
+    this.bookingId = this.activatedRoute.snapshot.params['bookingId'] // for editing booking
     this.tenantId = this.activatedRoute.snapshot.queryParams['tenantId']
     this.meetingId = this.activatedRoute.snapshot.queryParams['meetingId']
+    console.log(`booking id >>> `, this.bookingId)
 
     this.getMeeting(this.meetingId, this.tenantId)
 
@@ -57,7 +58,10 @@ export class CreateBookingComponent implements OnInit {
         next: (res) => {
           this.meeting = res
           const tenantNameArr = (this.meeting.link.split('-'))
-          this.tenantName = `${tenantNameArr[0]} ${tenantNameArr[1]}`
+          this.tenantName = tenantNameArr.join(' ')
+          this.minDate = new Date(res.dateRange.start)
+          this.maxDate = new Date(res.dateRange.end)
+          console.log(`meeting dates >>>`, this.minDate, this.maxDate)
         },
         error: (e) => {
           console.log(`error: `, e.error.message)
@@ -82,28 +86,26 @@ export class CreateBookingComponent implements OnInit {
     this.formErrors = {}
     const formValue = this.bookingForm.getRawValue() //todo: trim name & email
 
+    const extras = {
+      queryParams: {
+        bookingId: this.bookingId,
+        meetingId: this.meetingId,
+        tenantId: this.tenantId
+      },
+      tenantUrl: this.meeting.link,
+    }
+
     const booking: Booking = { // todo: add meetingId to fetch required details on next screen
       date: formValue.date,
       time: this.selectedTime || formValue.t,
       completed: false,
       email: formValue.email,
-      // gender: formValue.gender,
       meetingType: this.meeting.name,
       message: formValue.message,
-      // mobile: formValue.mobile,
       name: formValue.name,
-      // purpose: formValue.purpose,
-      // status: formValue.status,
-      tenantId: this.tenantId
-    }
-
-    const extras = {
-      queryParams: {
-        id: this.bookingId,
-        meetingId: this.meetingId,
-        tenantId: this.tenantId
-      },
-      tenantUrl: this.meeting.link,
+      tenantId: this.tenantId,
+      location: this.meeting.location,
+      extras
     }
 
     if (!this.bookingId) {
@@ -120,7 +122,10 @@ export class CreateBookingComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log('booking created successfully', res)
-          extras.queryParams.id = res._id
+
+          extras.queryParams.bookingId = res.id
+          // extras.queryParams.bookingId = this.bookingId
+
           sessionStorage.setItem(`ipadeExtras`, JSON.stringify(extras))
           this.router.navigate([`/booking/booking-details/${this.meeting.link}`],
             { queryParams: extras.queryParams }
@@ -140,6 +145,7 @@ export class CreateBookingComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(`booking with id ${this.bookingId} successfully updated!`)
+          extras.queryParams.bookingId = this.bookingId
 
           this.router.navigate([`/booking/booking-details/${this.meeting.link}`],
             { queryParams: extras.queryParams }
@@ -159,21 +165,18 @@ export class CreateBookingComponent implements OnInit {
 
         this.selectedTime = booking.time
         this.defaultDate = new Date(booking.date)
-        this.sliceTime(this.meeting.duration)
+        this.sliceTime(this.meeting?.duration)
         this.selectTime(this.selectedTime)
 
-        console.log(`booking date >>>`, this.defaultDate)
+        console.log(`booking  >>>`, booking)
         this.bookingForm.patchValue({
           date: booking.date,
           time: this.selectedTime,
           completed: false,
           email: booking.email,
-          // gender: booking.gender,
           meetingType: booking.meetingType,
           message: booking.message,
-          // mobile: booking.mobile,
           name: booking.name,
-          // purpose: booking.purpose,
           status: booking.status,
           tenantId: this.tenantId
         })
@@ -183,8 +186,12 @@ export class CreateBookingComponent implements OnInit {
   sliceTime(duration): void {
     const eventDate = this.bookingForm.getRawValue().date || this.defaultDate;
     let start = new Date(eventDate); // format: new Date("2016-05-04T00:00:00.000Z");
-    start.setHours(7,0,0,0)
-    let end = new Date(start.getTime() + (12 * 60 * 60 * 1000)); // use meeting time
+    const resumptionTime = new Date(this.meeting?.resumptionTime)
+    const closingTime = new Date(this.meeting?.closingTime)
+    start.setHours(resumptionTime.getHours(),resumptionTime.getMinutes(),0,0)
+    // let end = new Date(start.getTime() + (12 * 60 * 60 * 1000)); // use meeting time
+    let end = new Date(eventDate)
+    end.setHours(closingTime.getHours(), closingTime.getMinutes(), 0, 0)
 
     let slices = [];
     let count = 0;

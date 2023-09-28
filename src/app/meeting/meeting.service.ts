@@ -23,11 +23,16 @@ export class MeetingService {
   }
 
   getMeeting(meetingId: string, tenantId: string): Observable<Meeting> {
-    return this.http.get<Meeting>(`${this.baseUrl}/meeting/${meetingId}/?meetingId=${meetingId}&tenantId=${tenantId}` )
+    return this.http.get<Meeting>(`${this.baseUrl}/meeting/i/${meetingId}/?meetingId=${meetingId}&tenantId=${tenantId}` )
   }
 
   getMeetings(tenantId: string): Observable<Meeting[]> {
     return this.http.get<Meeting[]>(`${this.baseUrl}/meeting?tenantId=${tenantId}`, { headers: this.headers })
+  }
+
+
+  getMeetingsByUsername(username: string): Observable<Meeting[]> {
+    return this.http.get<Meeting[]>(`${this.baseUrl}/meeting/${username}`, { headers: this.headers })
   }
 
   updateMeeting(meeting: Meeting, id: string, tenantId: string): Observable<Meeting> {

@@ -37,7 +37,7 @@ export class BookingService {
   deleteBooking(id: string) {}
 
   makePayment(transaction, booking_id: string): Observable<Transaction> {
-    return this.http.post<Transaction>(`${this.baseUrl}/payment/`, JSON.stringify(transaction), { headers: this.headers, params: { booking_id } })
+    return this.http.post<Transaction>(`${this.baseUrl}/payment`, JSON.stringify(transaction), { headers: this.headers, params: { booking_id } })
   }
 
   verifyPayment(params): Observable<Transaction> {

@@ -11,12 +11,12 @@
             role="tab"
             aria-controls="upcoming-meetings"
             aria-selected="true"
-            (click)="fetchPendingMeetings()"
+            (click)="fetchUpcomingMeetings()"
           >
             Upcoming
           </a>
         </li>
-        <!--<li class="nav-item" role="presentation">
+        <li class="nav-item" role="presentation">
           <a
             class="nav-link"
             id="pending-meetings-tab"
@@ -29,7 +29,7 @@
           >
             Pending
           </a>
-        </li>-->
+        </li>
         <li class="nav-item" role="presentation">
           <a
             class="nav-link"
@@ -66,11 +66,11 @@
           <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
         </div>
 
-        <!--<div class="tab-pane fade" id="pending-meetings" role="tabpanel" aria-labelledby="pending-meetings-tab">
+        <div class="tab-pane fade" id="pending-meetings" role="tabpanel" aria-labelledby="pending-meetings-tab">
           <div class="row">
-            pending meetings
+            <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
           </div>
-        </div>-->
+        </div>
 
         <div class="tab-pane fade" id="past-meetings" role="tabpanel" aria-labelledby="past-meetings-tab">
           <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
@@ -80,17 +80,30 @@
           <div class="row">
             <form [formGroup]="dateForm" class="row g-3">
               <div class="col-auto">
-                <label for="dateRange" class="col-form-label fw-medium">Select date range:</label>
+                <label  class="col-form-label fw-medium">Select date range:</label>
               </div>
-              <div class="col-auto">
-                <label for="dateRange" class="visually-hidden">Password</label>
-                <p-calendar
-                  formControlName="dateRange"
-                  selectionMode="range"
-                  id="dateRange"
-                  [readonlyInput]="true"
-                ></p-calendar>
+              <div class="mb-3 col-md-3">
+                <div class="row" id="time">
+                  <div class="col-sm-6 p-float-label">
+                    <p-calendar
+                      formControlName="fromDate"
+                      id="fromDate"
+                      [readonlyInput]="true"
+                    ></p-calendar>
+                    <label for="fromDate" class="ps-2">From</label>
+                  </div>
+                  <div class="col-sm-6 p-float-label">
+                    <p-calendar
+                      formControlName="toDate"
+                      id="toDate"
+                      [readonlyInput]="true"
+                    ></p-calendar>
+                    <label for="toDate" class="ps-2">To</label>
+                  </div>
+                </div>
+
               </div>
+
               <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3" (click)="setDateRange()">GO!</button>
               </div>

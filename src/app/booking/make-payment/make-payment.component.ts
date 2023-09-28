@@ -25,7 +25,7 @@ export class MakePaymentComponent implements OnInit{
 
   ngOnInit(): void {
     const params = this.activatedRoute.snapshot.queryParams
-    const id = this.activatedRoute.snapshot.params['id']
+    const bookingId = this.activatedRoute.snapshot.queryParams['bookingId']
     const tenantId = this.activatedRoute.snapshot.queryParams['tenantId']
     console.log(`query params >>>`, params)
     this.paymentStatus = params['status']
@@ -34,7 +34,7 @@ export class MakePaymentComponent implements OnInit{
       .pipe(take(1))
       .subscribe({
         next: (res) => {
-          this.getBooking(res.booking_id, tenantId)
+          this.getBooking(bookingId, tenantId)
           this.transaction = res
           console.log(`transaction >>>`, res)
         },
@@ -59,7 +59,7 @@ export class MakePaymentComponent implements OnInit{
     const id = sessionStorage.getItem('booking_id')
     const extras = JSON.parse(sessionStorage.getItem(`ipadeExtras`))
     console.log(`ipade extras >>>`, extras)
-    this.router.navigate([`/booking/booking-details${extras.tenantUrl}`], {
+    this.router.navigate([`/booking/booking-details/${extras.tenantUrl}`], {
       queryParams: extras.queryParams
     })
   }

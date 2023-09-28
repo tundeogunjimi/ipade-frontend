@@ -1,0 +1,9 @@
+.card {
+  cursor: pointer;
+}
+
+.card:hover {
+  background: #eee;
+  padding: 5px;
+  transition: padding 0.5s;
+}

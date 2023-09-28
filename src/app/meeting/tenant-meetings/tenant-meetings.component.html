@@ -1,0 +1,17 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 me-2"  *ngFor="let meeting of meetings">
+
+      <div class="card" (click)="gotoMeeting(meeting)">
+        <div class="card-body">
+          {{ meeting?.name }} <br>
+          {{ meeting?.desc }} <br>
+          {{ meeting?.location }} <br>
+          {{ meeting?.duration }} minutes <br>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -26,7 +26,8 @@ export class ScheduledMeetingsComponent implements OnInit{
   }
   ngOnInit(): void {
     this.dateForm = this.fb.group({
-      dateRange: ['']
+      fromDate: [''],
+      toDate: ['']
     })
     this.fetchUserDetails()
   }
@@ -51,7 +52,7 @@ export class ScheduledMeetingsComponent implements OnInit{
       .subscribe({
         next: (res) => {
           this.bookings = res
-          this.fetchPendingMeetings()
+          this.fetchUpcomingMeetings()
         },
         error: (e) => {
           console.log(e)
@@ -60,9 +61,14 @@ export class ScheduledMeetingsComponent implements OnInit{
       })
   }
 
+  fetchUpcomingMeetings() {
+    const today = new Date()
+    this.filteredBookings = this.bookings.filter((booking) => (new Date(booking.date) >= today) && (booking.status === 'paid'))
+  }
+
   fetchPendingMeetings() {
     const today = new Date()
-    this.filteredBookings = this.bookings.filter((booking) => new Date(booking.date) > today)
+    this.filteredBookings = this.bookings.filter((booking) => new Date(booking.date) > today && booking.status === 'pending')
   }
 
   fetchPastMeetings() {
@@ -72,8 +78,10 @@ export class ScheduledMeetingsComponent implements OnInit{
 
   setDateRange() {
     this.filteredBookings = []
-    const date = this.dateForm.getRawValue().dateRange;
-    this.filteredBookings = this.bookings.filter((booking) => new Date(booking.date) >= new Date(date[0]) && new Date(booking.date) <= new Date(date[1]))
-    console.log(`formValues`, date, this.filteredBookings)
+    const date = this.dateForm.getRawValue();
+    return this.filteredBookings = this.bookings.filter(
+      (booking) => new Date(booking.date) >= new Date(date.fromDate) && new Date(booking.date) <= new Date(date.toDate)
+    )
   }
+
 }

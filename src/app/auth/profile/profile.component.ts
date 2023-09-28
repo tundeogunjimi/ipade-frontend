@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {User} from "../../shared/data/auth/user-model";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
@@ -17,20 +17,27 @@ export class ProfileComponent implements OnInit {
   public profileForm: FormGroup
   public profilePicture: any
   public profileData: any;
+  public labels = {
+    altText: '',
+    name: ''
+  }
+
+  public isFormTouched: boolean
+
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
     private messageService: MessageService,
-  ) {
-    this.fetchUserDetails()
-  }
+    private cdr: ChangeDetectorRef,
+  ) { }
   ngOnInit(): void {
     const isLoggedIn = this.authService.isLoggedIn()
     if (!isLoggedIn) this.router.navigate(['/'])
     this.createProfileForm()
 
+    this.fetchUserDetails()
     if (localStorage.getItem('reload') && isLoggedIn) {
       localStorage.removeItem('reload')
       window.location.reload()
@@ -43,7 +50,7 @@ export class ProfileComponent implements OnInit {
   createProfileForm(): void {
     this.profileForm = this.fb.group({
       name: [''],
-      // email: new FormControl({value: '', disabled: true}),
+      // email: [''],
       bio: ['']
     })
   }
@@ -51,12 +58,35 @@ export class ProfileComponent implements OnInit {
   fetchUserDetails() {
     this.authService.fetchUserDetails()
       .subscribe({
-        next: (user) => { this.currentUser = user },
+        next: (user) => {
+          console.log(`logged in user `, user)
+          this.currentUser = user
+          if (user.accountType === 'personal') {
+            this.labels = {
+              altText: 'profile picture',
+              name: 'Full name'
+            }
+          } else if (user.accountType === 'business') {
+            this.labels = {
+              altText: 'company logo',
+              name: 'Company name'
+            }
+          }
+          this.patchProfileForm(user)
+        },
         error: (e) => {
           console.log(e)
           // this.router.navigate(['/login'])
         }
       })
+  }
+
+  patchProfileForm(user: User) {
+    this.profileForm.patchValue({
+      name: user.name,
+      email: user.email,
+      bio: user.bio
+    })
   }
 
   updateProfile(): void {
@@ -75,6 +105,7 @@ export class ProfileComponent implements OnInit {
           console.log(`profile update >>> `, res)
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Profile successfully updated' });
           this.fetchUserDetails()
+          this.isFormTouched = false
         },
         error: (e) => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: e.error.message });
@@ -139,5 +170,24 @@ export class ProfileComponent implements OnInit {
       })
   }
 
+  clearForm(): void {
+    this.profileForm.reset()
+    this.patchProfileForm(this.currentUser)
+  }
+
+  checkFormStatus(): void {
+    const formValues = this.profileForm.getRawValue()
+    const previousFormValue = {
+      name: this.currentUser.name,
+      bio: this.currentUser.bio
+    }
+
+    let falseCount = 0
+    for (const key in previousFormValue) {
+      if (formValues[key] !== previousFormValue[key]) falseCount++
+    }
+
+    this.isFormTouched = falseCount !== 0
+  }
 
 }

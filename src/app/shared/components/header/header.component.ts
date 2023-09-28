@@ -34,8 +34,6 @@ export class HeaderComponent implements OnInit{
             this.cdr.detectChanges()
           }
         })
-    } else {
-      this.router.navigate(['/'])
     }
   }
 

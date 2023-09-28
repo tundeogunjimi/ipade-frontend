@@ -4,6 +4,7 @@ export interface User{
   email: string,
   bio?: string,
   password?: string,
-  token?: string
+  token?: string,
+  accountType?: string,
 
 }
