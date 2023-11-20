@@ -2,247 +2,215 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-sm-12 border p-3">
-      <ul class="nav nav-underline" id="settingsTab" role="tablist">
-        <li class="nav-item me-3" role="presentation">
-          <a
-            class="nav-link active"
-            id="meeting-types-tab"
-            data-bs-toggle="tab"
-            href="#meeting-types"
-            role="tab"
-            aria-controls="meeting-types"
-            aria-selected="true"
-          >
-            Meeting Types
-          </a>
+
+      <ul class="nav nav-underline" id="settingsTab">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="javascript:void(0)">Meeting Types</a>
         </li>
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="scheduled-meetings-tab"
-            data-bs-toggle="tab"
-            href="#scheduled-meetings"
-            role="tab"
-            aria-controls="scheduled-meetings"
-            aria-selected="false"
-          >
-            Scheduled Meetings
-          </a>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/meeting/scheduled">Scheduled Meetings</a>
         </li>
       </ul>
 
-      <div class="tab-content my-4" id="settingsTabContent">
-        <div class="tab-pane fade show active" id="meeting-types" role="tabpanel" aria-labelledby="meeting-types-tab">
-          <div class="row">
-            <div class="col-md-4 col-sm-12">
-              <p class="lead fw-medium text-center text-primary">My Meetings</p>
-              <p-scrollPanel [style]="{ width: '100%', height: '70vh' }" styleClass="custombar1">
+      <div class="tab-content my-4">
+        <div class="row">
+          <div class="col-md-4 col-sm-12">
+            <p class="lead fw-medium text-center text-primary">My Meetings</p>
+            <p-scrollPanel [style]="{ width: '100%', height: '70vh' }" styleClass="custombar1">
 
-                <div *ngIf="!isMeetingFetched" class="spinner text-center">
-                  <p-progressSpinner></p-progressSpinner>
-                </div>
+              <div *ngIf="!isMeetingFetched" class="spinner text-center">
+                <p-progressSpinner></p-progressSpinner>
+              </div>
 
-                <ng-container *ngIf="isMeetingFetched">
-                  <ng-container *ngIf="meetings.length > 0; else noMeetingFound">
-                    <div class="card mb-2" *ngFor="let meeting of meetings">
-                      <div class="card-body meeting-card">
-                        <div class="row">
-                          <div class="col-sm-8">
-                            <span class="lead text-primary fw-medium">{{ meeting.name | titlecase }}</span>
-                          </div>
-                          <div class="col-sm-4 text-end">
-                            <span class="text-primary fw-medium">{{ meeting.price | currency: 'N'}}</span>
-                          </div>
-                          <div class="col-sm-12">
-                            <span class="text-muted">
-                              <span class="p-1">{{ meeting.duration }} Minutes,</span>
-                              <span>{{ meeting.location | titlecase }}</span>
-                            </span>
-                          </div>
+              <ng-container *ngIf="isMeetingFetched">
+                <ng-container *ngIf="meetings.length > 0; else noMeetingFound">
+                  <div class="card mb-2" *ngFor="let meeting of meetings">
+                    <div class="card-body meeting-card">
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <span class="lead text-primary fw-medium">{{ meeting.name | titlecase }}</span>
                         </div>
-                        <div class="row text-end">
-                          <div class="col-sm-12 pt-1 action-icons">
-                            <span class="tooltip-action">
-                              <span class="tooltiptext">Edit meeting</span>
-                              <i class="pi pi-pencil" (click)="selectMeeting(meeting, true)"></i>
-                            </span>
+                        <div class="col-sm-4 text-end">
+                          <span class="text-primary fw-medium">{{ meeting.price | currency: 'N'}}</span>
+                        </div>
+                        <div class="col-sm-12">
+                          <span class="text-muted">
+                            <span class="p-1">{{ meeting.duration }} Minutes,</span>
+                            <span>{{ meeting.location | titlecase }}</span>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="row text-end">
+                        <div class="col-sm-12 pt-1 action-icons">
+                          <span class="tooltip-action">
+                            <span class="tooltiptext">Edit meeting</span>
+                            <i class="pi pi-pencil" (click)="selectMeeting(meeting, true)"></i>
+                          </span>
 
-                            <span class="tooltip-action">
-                              <span class="tooltiptext">{{ copyText }}</span>
-                              <i class="pi pi-copy"
-                                 [copyClipboard]="shareUrl"
-                                 (click)="selectMeeting(meeting); copyLink()"
-                                 (mouseout)="resetCopyText()"
-                              ></i>
-                            </span>
+                          <span class="tooltip-action">
+                            <span class="tooltiptext">{{ copyText }}</span>
+                            <i class="pi pi-copy"
+                               [copyClipboard]="shareUrl"
+                               (click)="selectMeeting(meeting); copyLink()"
+                               (mouseout)="resetCopyText()"
+                            ></i>
+                          </span>
 
-                            <span class="tooltip-action">
-                              <i
-                                class="pi pi-share-alt"
-                                data-bs-toggle="modal"
-                                data-bs-target="#shareLinkModal"
-                                (click)="selectMeeting(meeting)"
-                              ></i>
-                              <span class="tooltiptext">Share meeting</span>
-                            </span>
+                          <span class="tooltip-action">
+                            <i
+                              class="pi pi-share-alt"
+                              data-bs-toggle="modal"
+                              data-bs-target="#shareLinkModal"
+                              (click)="selectMeeting(meeting)"
+                            ></i>
+                            <span class="tooltiptext">Share meeting</span>
+                          </span>
 
-                            <span class="tooltip-action">
-                              <i
-                                class="pi pi-trash text-danger"
-                                data-bs-toggle="modal"
-                                data-bs-target="#deleteModal"
-                                (click)="prepareForDelete(meeting)"
-                              ></i>
-                              <span class="tooltiptext">Delete Meeting</span>
-                            </span>
+                          <span class="tooltip-action">
+                            <i
+                              class="pi pi-trash text-danger"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteModal"
+                              (click)="prepareForDelete(meeting)"
+                            ></i>
+                            <span class="tooltiptext">Delete Meeting</span>
+                          </span>
 
-                          </div>
                         </div>
                       </div>
                     </div>
-                  </ng-container>
-                  <ng-template #noMeetingFound>
-                    <div class="card mb-2">
-                      <div class="card-body meeting-card">
-                        <div class="row">
-                          <p class="text-center my-5 fw-medium">
-                            You have not created any meeting. <br>
-                            Fill the form on the right to get started.
-                            <i class="pi pi-arrow-right" style="font-size: 2em"></i>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
+                  </div>
                 </ng-container>
-              </p-scrollPanel>
-            </div>
-            <div class="col-md-8 col-sm-12">
-              <ng-container *ngIf="meetingType === 'paid'">
-                <p class="lead fw-medium text-center text-primary">New Meeting</p>
-                <div class="card">
-                  <form [formGroup]="meetingForm" class="border p-3">
-                    <div class="row">
-                      <div class="mb-3 col-md-9">
-                        <div class="text-danger" *ngIf="formErrors?.name">{{ formErrors?.name }}</div>
-                        <label for="name" class="form-label">Meeting Name</label>
-                        <input
-                          formControlName="name"
-                          type="text" class="form-control"
-                          id="name"
-                          placeholder="Medical Consultation, Marriage Counseling..."
-                          (focusin)="clearError('name')"
-                        >
-                      </div>
-                      <div class=" mb-3 col-md-3">
-                        <div class="text-danger" *ngIf="formErrors?.duration">{{ formErrors?.duration }}</div>
-                        <label for="duration" class="form-label">Duration</label>
-                        <select formControlName="duration" class="form-select" id="duration" aria-label="Default select example" (focusin)="clearError('duration')">
-                          <option selected>Duration</option>
-                          <option value="30">30 min</option>
-                          <option value="45">45 min</option>
-                          <option value="60">60 min</option>
-                          <option value="90">1 hr 30 min</option>
-                          <option value="120">2 hrs</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3 col-md-3">
-                        <div class="text-danger" *ngIf="formErrors?.location">{{ formErrors?.location }}</div>
-                        <label for="desc" class="form-label">Location</label>
-                        <select
-                          formControlName="location"
-                          class="form-select" id="desc"
-                          aria-label="Default select example"
-                          (focusin)="clearError('location')"
-                          (change)="checkLocationValue()"
-                        >
-                          <option selected>Location</option>
-                          <option *ngFor="let location of locations" [value]="location.value">{{ location.name }}</option>
-                        </select>
-                      </div>
-                      <div class="mb-3 col-md-3">
-                        <div class="text-danger" *ngIf="formErrors?.dateRange">{{ formErrors?.dateRange }}</div>
-                        <label for="date-range" class="form-label">Date Range</label>
-                        <p-calendar
-                          formControlName="dateRange"
-                          selectionMode="range"
-                          id="date-range"
-                          [readonlyInput]="true"
-                          (focusin)="clearError('dateRange')"
-                        ></p-calendar>
-                      </div>
-                      <div class="mb-3 col-md-4">
-                        <label for="time" class="form-label">Working hours</label>
-                        <div class="row" id="time">
-                          <div class="col-sm-6 p-float-label">
-                            <div class="text-danger" *ngIf="formErrors?.resumptionTime">{{ formErrors?.resumptionTime }}</div>
-                            <p-calendar
-                              formControlName="resumptionTime"
-                              id="resumptionTime"
-                              [readonlyInput]="true"
-                              [showTime]="true"
-                              [timeOnly]="true"
-                              hourFormat="12"
-                              (focusin)="clearError('resumptionTime')"
-                            ></p-calendar>
-                            <label for="resumptionTime" class="ps-2">From</label>
-                          </div>
-                          <div class="col-sm-6 p-float-label">
-                            <div class="text-danger" *ngIf="formErrors?.closingTime">{{ formErrors?.closingTime }}</div>
-                            <p-calendar
-                              formControlName="closingTime"
-                              id="closingTime"
-                              [readonlyInput]="true"
-                              [showTime]="true"
-                              [timeOnly]="true"
-                              hourFormat="12"
-                              (focusin)="clearError('closingTime')"
-                            ></p-calendar>
-                            <label for="closingTime" class="ps-2">To</label>
-                          </div>
-                        </div>
-
-                      </div>
-                      <div class="mb-3 col-md-2">
-                        <div class="text-danger" *ngIf="formErrors?.price">{{ formErrors?.price }}</div>
-                        <label for="amount" class="form-label">Price</label>
-                        <input formControlName="price" type="number" class="form-control" id="amount" placeholder="" (focusin)="clearError('price')">
-                      </div>
-                      <ng-container *ngIf="shouldShowAddressField">
-                        <div class="mb-3">
-                          <label for="address" class="form-label">Address</label>
-                          <textarea formControlName="address" class="form-control" id="address" rows="1"></textarea>
-                        </div>
-                      </ng-container>
-                      <div class="mb-3">
-                        <div class="text-danger" *ngIf="formErrors?.desc">{{ formErrors?.desc }}</div>
-                        <label for="desc" class="form-label">Description</label>
-                        <textarea formControlName="desc" class="form-control" id="desc" rows="3"></textarea>
-                      </div>
-                      <!--<div class="mb-3">
-                        <label for="link" class="form-label">Meeting link</label>
-                        <input formControlName="link" type="text" class="form-control" id="link" placeholder="/url-link">
-                      </div>-->
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12 text-end">
-                        <button class="btn btn-primary" (click)="saveMeeting()">{{ saveButtonTxt }} Meeting</button>
+                <ng-template #noMeetingFound>
+                  <div class="card mb-2">
+                    <div class="card-body meeting-card">
+                      <div class="row">
+                        <p class="text-center my-5 fw-medium">
+                          You have not created any meeting. <br>
+                          Fill the form on the right to get started.
+                          <i class="pi pi-arrow-right" style="font-size: 2em"></i>
+                        </p>
                       </div>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                </ng-template>
               </ng-container>
-            </div>
+            </p-scrollPanel>
+          </div>
+          <div class="col-md-8 col-sm-12">
+            <ng-container *ngIf="meetingType === 'paid'">
+              <p class="lead fw-medium text-center text-primary">New Meeting</p>
+              <div class="card">
+                <form [formGroup]="meetingForm" class="border p-3">
+                  <div class="row">
+                    <div class="mb-3 col-md-9">
+                      <div class="text-danger" *ngIf="formErrors?.name">{{ formErrors?.name }}</div>
+                      <label for="name" class="form-label">Meeting Name</label>
+                      <input
+                        formControlName="name"
+                        type="text" class="form-control"
+                        id="name"
+                        placeholder="Medical Consultation, Marriage Counseling..."
+                        (focusin)="clearError('name')"
+                      >
+                    </div>
+                    <div class=" mb-3 col-md-3">
+                      <div class="text-danger" *ngIf="formErrors?.duration">{{ formErrors?.duration }}</div>
+                      <label for="duration" class="form-label">Duration</label>
+                      <select formControlName="duration" class="form-select" id="duration" aria-label="Default select example" (focusin)="clearError('duration')">
+                        <option selected>Duration</option>
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                        <option value="60">60 min</option>
+                        <option value="90">1 hr 30 min</option>
+                        <option value="120">2 hrs</option>
+                      </select>
+                    </div>
+
+                    <div class="mb-3 col-md-3">
+                      <div class="text-danger" *ngIf="formErrors?.location">{{ formErrors?.location }}</div>
+                      <label for="desc" class="form-label">Location</label>
+                      <select
+                        formControlName="location"
+                        class="form-select" id="desc"
+                        aria-label="Default select example"
+                        (focusin)="clearError('location')"
+                        (change)="checkLocationValue()"
+                      >
+                        <option selected>Location</option>
+                        <option *ngFor="let location of locations" [value]="location.value">{{ location.name }}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3 col-md-3">
+                      <div class="text-danger" *ngIf="formErrors?.dateRange">{{ formErrors?.dateRange }}</div>
+                      <label for="date-range" class="form-label">Date Range</label>
+                      <p-calendar
+                        formControlName="dateRange"
+                        selectionMode="range"
+                        id="date-range"
+                        [readonlyInput]="true"
+                        (focusin)="clearError('dateRange')"
+                      ></p-calendar>
+                    </div>
+                    <div class="mb-3 col-md-4">
+                      <label for="time" class="form-label">Working hours</label>
+                      <div class="row" id="time">
+                        <div class="col-sm-6 p-float-label">
+                          <div class="text-danger" *ngIf="formErrors?.resumptionTime">{{ formErrors?.resumptionTime }}</div>
+                          <p-calendar
+                            formControlName="resumptionTime"
+                            id="resumptionTime"
+                            [readonlyInput]="true"
+                            [showTime]="true"
+                            [timeOnly]="true"
+                            hourFormat="12"
+                            (focusin)="clearError('resumptionTime')"
+                          ></p-calendar>
+                          <label for="resumptionTime" class="ps-2">From</label>
+                        </div>
+                        <div class="col-sm-6 p-float-label">
+                          <div class="text-danger" *ngIf="formErrors?.closingTime">{{ formErrors?.closingTime }}</div>
+                          <p-calendar
+                            formControlName="closingTime"
+                            id="closingTime"
+                            [readonlyInput]="true"
+                            [showTime]="true"
+                            [timeOnly]="true"
+                            hourFormat="12"
+                            (focusin)="clearError('closingTime')"
+                          ></p-calendar>
+                          <label for="closingTime" class="ps-2">To</label>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="mb-3 col-md-2">
+                      <div class="text-danger" *ngIf="formErrors?.price">{{ formErrors?.price }}</div>
+                      <label for="amount" class="form-label">Price</label>
+                      <input formControlName="price" type="number" class="form-control" id="amount" placeholder="" (focusin)="clearError('price')">
+                    </div>
+                    <ng-container *ngIf="shouldShowAddressField">
+                      <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea formControlName="address" class="form-control" id="address" rows="1"></textarea>
+                      </div>
+                    </ng-container>
+                    <div class="mb-3">
+                      <div class="text-danger" *ngIf="formErrors?.desc">{{ formErrors?.desc }}</div>
+                      <label for="desc" class="form-label">Description</label>
+                      <textarea formControlName="desc" class="form-control" id="desc" rows="3"></textarea>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 text-end">
+                      <button class="btn btn-primary" (click)="saveMeeting()">{{ saveButtonTxt }} Meeting</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </ng-container>
           </div>
         </div>
-
-        <div class="tab-pane fade" id="scheduled-meetings" role="tabpanel" aria-labelledby="scheduled-meetings-tab">
-          <div class="row">
-            <app-scheduled-meetings></app-scheduled-meetings>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>

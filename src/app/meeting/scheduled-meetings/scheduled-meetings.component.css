@@ -1,7 +1,12 @@
-.container {
+/* .container {
   background: #eee;
-}
+} */
 
 table td, th {
   background: #eee;
+}
+
+.tab-content {
+  background: #eee;
+  padding: 0.5rem;
 }

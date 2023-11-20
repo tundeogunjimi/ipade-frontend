@@ -1,119 +1,136 @@
-<div class="container">
+
+<div class="container mt-5">
   <div class="row">
-    <div class="col-sm-12 p-3">
-      <ul class="nav nav-underline" id="scheduledMeetings" role="tablist">
-        <li class="nav-item me-3" role="presentation">
-          <a
-            class="nav-link active"
-            id="upcoming-meetings-tab"
-            data-bs-toggle="tab"
-            href="#upcoming-meetings"
-            role="tab"
-            aria-controls="upcoming-meetings"
-            aria-selected="true"
-            (click)="fetchUpcomingMeetings()"
-          >
-            Upcoming
-          </a>
+    <div class="col-sm-12 border p-3">
+
+      <ul class="nav nav-underline" id="settingsTab">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/meeting">Meeting Types</a>
         </li>
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="pending-meetings-tab"
-            data-bs-toggle="tab"
-            href="#pending-meetings"
-            role="tab"
-            aria-controls="pending-meetings"
-            aria-selected="false"
-            (click)="fetchPendingMeetings()"
-          >
-            Pending
-          </a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="past-meetings-tab"
-            data-bs-toggle="tab"
-            href="#past-meetings"
-            role="tab"
-            aria-controls="past-meetings"
-            aria-selected="false"
-            (click)="fetchPastMeetings()"
-          >
-            Past
-          </a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="date-range-meetings-tab"
-            data-bs-toggle="tab"
-            href="#date-range-meetings"
-            role="tab"
-            aria-controls="date-range-meetings"
-            aria-selected="false"
-            (click)="setDateRange()"
-          >
-            Date Range
-          </a>
+        <li class="nav-item">
+          <a class="nav-link active" href="javascript:void(0)">Scheduled Meetings</a>
         </li>
       </ul>
 
-      <div class="tab-content my-4" id="scheduledMeetingsContent">
-
-        <div class="tab-pane fade show active" id="upcoming-meetings" role="tabpanel" aria-labelledby="upcoming-meetings-tab">
-          <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
-        </div>
-
-        <div class="tab-pane fade" id="pending-meetings" role="tabpanel" aria-labelledby="pending-meetings-tab">
-          <div class="row">
-            <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
-          </div>
-        </div>
-
-        <div class="tab-pane fade" id="past-meetings" role="tabpanel" aria-labelledby="past-meetings-tab">
-          <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
-        </div>
-
-        <div class="tab-pane fade" id="date-range-meetings" role="tabpanel" aria-labelledby="date-range-meetings-tab">
-          <div class="row">
-            <form [formGroup]="dateForm" class="row g-3">
-              <div class="col-auto">
-                <label  class="col-form-label fw-medium">Select date range:</label>
+      <div class="tab-content my-4">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <ul class="nav nav-pills" id="scheduledMeetings" role="tablist">
+              <li class="nav-item me-3" role="presentation">
+                <a
+                  class="nav-link active"
+                  id="upcoming-meetings-tab"
+                  data-bs-toggle="tab"
+                  href="#upcoming-meetings"
+                  role="tab"
+                  aria-controls="upcoming-meetings"
+                  aria-selected="true"
+                  (click)="fetchUpcomingMeetings()"
+                >
+                  Upcoming
+                </a>
+              </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  class="nav-link"
+                  id="pending-meetings-tab"
+                  data-bs-toggle="tab"
+                  href="#pending-meetings"
+                  role="tab"
+                  aria-controls="pending-meetings"
+                  aria-selected="false"
+                  (click)="fetchPendingMeetings()"
+                >
+                  Pending
+                </a>
+              </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  class="nav-link"
+                  id="past-meetings-tab"
+                  data-bs-toggle="tab"
+                  href="#past-meetings"
+                  role="tab"
+                  aria-controls="past-meetings"
+                  aria-selected="false"
+                  (click)="fetchPastMeetings()"
+                >
+                  Past
+                </a>
+              </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  class="nav-link"
+                  id="date-range-meetings-tab"
+                  data-bs-toggle="tab"
+                  href="#date-range-meetings"
+                  role="tab"
+                  aria-controls="date-range-meetings"
+                  aria-selected="false"
+                  (click)="setDateRange()"
+                >
+                  Date Range
+                </a>
+              </li>
+            </ul>
+      
+            <div class="tab-content my-4" id="scheduledMeetingsContent">
+      
+              <div class="tab-pane fade show active" id="upcoming-meetings" role="tabpanel" aria-labelledby="upcoming-meetings-tab">
+                <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
               </div>
-              <div class="mb-3 col-md-3">
-                <div class="row" id="time">
-                  <div class="col-sm-6 p-float-label">
-                    <p-calendar
-                      formControlName="fromDate"
-                      id="fromDate"
-                      [readonlyInput]="true"
-                    ></p-calendar>
-                    <label for="fromDate" class="ps-2">From</label>
-                  </div>
-                  <div class="col-sm-6 p-float-label">
-                    <p-calendar
-                      formControlName="toDate"
-                      id="toDate"
-                      [readonlyInput]="true"
-                    ></p-calendar>
-                    <label for="toDate" class="ps-2">To</label>
-                  </div>
+      
+              <div class="tab-pane fade" id="pending-meetings" role="tabpanel" aria-labelledby="pending-meetings-tab">
+                <div class="row">
+                  <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
                 </div>
-
               </div>
-
-              <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3" (click)="setDateRange()">GO!</button>
+      
+              <div class="tab-pane fade" id="past-meetings" role="tabpanel" aria-labelledby="past-meetings-tab">
+                <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
               </div>
-            </form>
-          </div>
-          <div class="row">
-            <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
+      
+              <div class="tab-pane fade" id="date-range-meetings" role="tabpanel" aria-labelledby="date-range-meetings-tab">
+                <div class="row">
+                  <form [formGroup]="dateForm" class="row g-3">
+                    <div class="col-auto">
+                      <label  class="col-form-label fw-medium">Select date range:</label>
+                    </div>
+                    <div class="mb-3 col-md-3">
+                      <div class="row" id="time">
+                        <div class="col-sm-6 p-float-label">
+                          <p-calendar
+                            formControlName="fromDate"
+                            id="fromDate"
+                            [readonlyInput]="true"
+                          ></p-calendar>
+                          <label for="fromDate" class="ps-2">From</label>
+                        </div>
+                        <div class="col-sm-6 p-float-label">
+                          <p-calendar
+                            formControlName="toDate"
+                            id="toDate"
+                            [readonlyInput]="true"
+                          ></p-calendar>
+                          <label for="toDate" class="ps-2">To</label>
+                        </div>
+                      </div>
+      
+                    </div>
+      
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-primary mb-3" (click)="setDateRange()">GO!</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="row">
+                  <app-meeting-list [filteredBookings]="filteredBookings"></app-meeting-list>
+                </div>
+              </div>
+      
+            </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>

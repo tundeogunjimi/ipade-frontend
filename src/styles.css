@@ -60,6 +60,10 @@ header .nav-item .nav-link:hover {
   margin-bottom: 20px;
 }
 
+.avatar img {
+  cursor: pointer;
+}
+
 #avatarModal label {
   color: white;
   /* padding: 0.5rem; */
@@ -69,8 +73,18 @@ header .nav-item .nav-link:hover {
   margin-top: 1rem;
 }
 
-#settingsTab li a, #scheduledMeetings li a {
+#settingsTab li a {
   color: #1050a5;
+  margin-right: 20px;
+}
+
+#scheduledMeetings li a{
+  color: #1050a5
+}
+
+#scheduledMeetings li a.active {
+  background: #1050a5;
+  color: #fff;
   margin-right: 20px;
 }
 
