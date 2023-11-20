@@ -16,13 +16,15 @@ export class ProfileComponent implements OnInit {
   public currentUser: User;
   public profileForm: FormGroup
   public profilePicture: any
-  public profileData: any;
+  public profileData: {};
   public labels = {
     altText: '',
     name: ''
   }
 
-  public isFormTouched: boolean
+  public isFormTouched: boolean;
+  public isPictureLoaded: boolean = false;
+  public isProfileDetailsLoaded: boolean = false;
 
 
   constructor(
@@ -56,11 +58,15 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchUserDetails() {
+    this.currentUser = { name: '', email: ''};
     this.authService.fetchUserDetails()
       .subscribe({
         next: (user) => {
           console.log(`logged in user `, user)
-          this.currentUser = user
+          this.currentUser = user;
+          this.profilePicture = user.profilePicture;
+          this.isPictureLoaded = true;
+          this.isProfileDetailsLoaded = true;
           if (user.accountType === 'personal') {
             this.labels = {
               altText: 'profile picture',
@@ -76,7 +82,7 @@ export class ProfileComponent implements OnInit {
         },
         error: (e) => {
           console.log(e)
-          // this.router.navigate(['/login'])
+          this.isPictureLoaded = true;
         }
       })
   }
@@ -130,6 +136,7 @@ export class ProfileComponent implements OnInit {
 
   onFileChange(event) {
     const files = event.target.files as FileList;
+
     if (!files || files.length === 0) {
       this.messageService.add({
         severity: 'error',
@@ -152,21 +159,47 @@ export class ProfileComponent implements OnInit {
 
     reader.onload = () => {
       // this.profilePicture = reader.result
-      this.profileData = {
-        user: this.currentUser,
-        img: reader.result
-      }
+      // this.profileData = {
+      //   ...this.currentUser,
+      //   profilePicture: reader.result
+      // }
 
+      this.profilePicture = reader.result
       console.log(reader.result)
     }
 
   }
 
-  uploadProfilePicture() {
+  uploadProfilePicture(profilePicture: any) {
+    this.isPictureLoaded = false;
+    console.log(`profile to update `, profilePicture)
+
+    // let reader = new FileReader()
+    // reader.readAsDataURL(profilePicture)
+
+    // reader.onload = () => {
+    //   this.profilePicture = reader.result
+    //   this.profileData = {
+    //     ...this.currentUser,
+    //     profilePicture: reader.result
+    //   }
+
+    //   this.profilePicture = reader.result
+    //   console.log(reader.result)
+    // }
+
+    this.profileData = {
+      ...this.currentUser,
+      profilePicture: profilePicture
+    }
+    
     this.authService.uploadProfilePicture(this.profileData)
       .pipe(take(1))
       .subscribe({
-
+        next: (res) => {
+          console.log('profile picture successfully uploaded', res)
+          this.fetchUserDetails()
+        }
       })
   }
 

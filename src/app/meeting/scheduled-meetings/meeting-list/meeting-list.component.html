@@ -57,7 +57,7 @@
       <td>{{ booking?.email }}</td>
       <td>{{ booking?.location }}</td>
       <td>{{ booking?.message }}</td>
-      <td>{{ booking?.meetingType }}</td>
+      <td>{{ booking?.meetingType  | titlecase }}</td>
       <td class="action-icons">
       <span (click)="editBooking(booking)">
         <i class="pi pi-pencil text-success me-3"></i>

@@ -1,0 +1,61 @@
+<div class="avatar">
+    <div>
+        <img 
+            class="img-thumbnail" 
+            [src]="currentUser?.profilePicture" 
+            data-bs-toggle="modal" 
+            data-bs-target="#avatarModal"
+        />
+    </div>
+</div>
+
+  
+<!-- Modal -->
+<div class="modal fade" id="avatarModal" tabindex="-1" aria-labelledby="avatarModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="avatarModalLabel">Crop your image</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body text-center">
+        <img 
+            *ngIf="!isImageSelected"
+            class="img-thumbnail" 
+            [src]="currentUser?.profilePicture" 
+        />
+
+        <ng-container *ngIf="isImageSelected">
+            <div style="width: 200px; margin: auto;">
+                <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="4 / 3"
+                [resizeToWidth]="150"
+                format="png"
+                output="base64"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded($event)"
+                (cropperReady)="cropperReady()"
+                (loadImageFailed)="loadImageFailed()"
+                ></image-cropper>
+            </div>        
+        </ng-container>
+
+        <!-- <input type="file" id="fileInput" class="form-control" (change)="fileChangeEvent($event)"/> -->
+        <div class="mb-3">
+            <label for="formFile" class="btn btn-secondary">Chose file</label>
+            <input class="form-control" type="file" id="formFile" (change)="fileChangeEvent($event)" hidden>
+        </div>
+          
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #closebutton>Close</button>
+        <button type="button" class="btn btn-primary" (click)="uploadProfilePicture()">
+            <i class="pi pi-upload"></i> Upload picture
+        </button>
+    </div>
+    </div>
+</div>
+</div>

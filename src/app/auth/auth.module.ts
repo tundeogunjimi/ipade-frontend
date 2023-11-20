@@ -11,6 +11,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ConfirmRegistrationComponent } from './confirm-registration/confirm-registration.component';
 import {MessagesModule} from "primeng/messages";
 import {ToastModule} from "primeng/toast";
+import { AvatarComponent } from './profile/avatar/avatar.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import {ToastModule} from "primeng/toast";
     ProfileComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    ConfirmRegistrationComponent
+    ConfirmRegistrationComponent,
+    AvatarComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +31,7 @@ import {ToastModule} from "primeng/toast";
     RouterLink,
     MessagesModule,
     ToastModule,
+    ImageCropperModule
   ]
 })
 export class AuthModule { }

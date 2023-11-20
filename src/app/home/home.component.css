@@ -1,4 +1,112 @@
-
+.container-fluid {
+  padding-right: 3rem;
+  margin: 0 auto;
+}
 h1 {
   font-size: 3rem
+}
+
+.collage .collage-item {
+  margin-top: 1rem;
+  padding: 5px;
+}
+
+.collage .collage-item > div {
+  height: 200px;
+  border: solid 1px #eee;
+  border-radius: 10px;
+  background: #1050a5;
+}
+
+.collage .first-column {
+  height: 85vh;
+  padding: 0;
+}
+
+.collage .first-column .image-1 {
+  height: 60%;
+  border-radius: 10px;
+  background: url("src/assets/images/female-doctor.jpg") center center #eee;
+  margin: 5px 5px 0;
+}
+
+.collage .first-column .image-2 {
+  height: 40%;
+  border-radius: 10px;
+  background: url("src/assets/images/hairt-stylist.jpg") center center #eee;
+  margin: 5px 5px 0;
+}
+
+.collage .second-column {
+  height: 85vh;
+  padding: 0;
+}
+
+.collage .second-column .image-3 {
+  height: 100%;
+  border-radius: 10px;
+  background: url("src/assets/images/counselor.jpg") center center #eee;
+  margin: 5px 5px 0 0;
+}
+
+.collage .third-column {
+  height: 85vh;
+  padding: 0;
+}
+
+.collage .third-column .image-4 {
+  height: 24%;
+  background: url("src/assets/images/black-boy-playing-guitar.jpg") center center #eee;
+  border-radius: 10px;
+  margin: 5px 5px 0 0;
+}
+
+.collage .third-column .image-5 {
+  height: 24%;
+  background: url("src/assets/images/portrait-gorgeous-woman-applying-eyeshadow-with-make-up-brush.jpg") center center #eee;
+  border-radius: 10px;
+  margin: 5px 5px 0 0;
+}
+
+.collage .third-column .image-6 {
+  height: 24%;
+  background: url("src/assets/images/handsome-black-man-is-engaged-gym.jpg") center center #eee;
+  border-radius: 10px;
+  margin: 5px 5px 0 0;
+}
+
+.collage .third-column .image-7 {
+  height: 24%;
+  background: url("src/assets/images/lawyer.jpg") center center #eee;
+  border-radius: 10px;
+  margin: 5px 5px 0 0;
+}
+
+#features {
+  background: #eee;
+  margin-top: 20px;
+  padding: 3rem 0;
+}
+
+#features .feature-title {
+  text-align: center;
+  color: #1050a5;
+  text-decoration: underline;
+}
+
+#features .feature {
+  padding: 2rem;
+}
+
+#features .feature .feature-content {
+  background: url("src/assets/images/female-doctor.jpg") center center #fff;
+  height: 300px;
+  border-radius: 10px;
+}
+
+#features .feature p {
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  color: #1050a5;
 }

@@ -5,7 +5,7 @@ import {MeetingComponent} from "./meeting/meeting.component";
 
 const routes: Routes = [
   { path: '', component: MeetingComponent},
-  { path: 'tenant/:username', component: TenantMeetingsComponent},
+  { path: ':username', component: TenantMeetingsComponent},
 ];
 
 @NgModule({
