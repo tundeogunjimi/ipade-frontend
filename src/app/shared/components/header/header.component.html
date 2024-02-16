@@ -1,17 +1,20 @@
 <header class="d-flex flex-wrap justify-content-center py-3 border-bottom">
-  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+  <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
     <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-    <span class="fs-3 fw-medium text-primary">Ipade</span>
+    <span class="fs-3 fw-medium text-primary">Ipade Booking App</span>
   </a>
 
   <ul class="nav nav-pills me-md-5">
     <ng-container *ngIf="isLoggedIn()">
       <li class="nav-item me-3">
-        <a class="btn btn-primary" routerLink="/meeting"><i class="pi pi-plus"></i> Create a meeting</a>
+        <a class="btn btn-outline-primary text-primary" routerLink="/meeting">
+          <!-- <i class="pi pi-plus"></i>  -->
+          Create a meeting
+        </a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" routerLink="/">Home</a>
-      </li>
+      </li> -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle fw-medium" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           {{ currentUser?.name }}
@@ -36,13 +39,13 @@
       </li>
 
     </ng-container>
-    <ng-container *ngIf="!isLoggedIn()">
+    <!-- <ng-container *ngIf="!isLoggedIn()">
       <li class="nav-item">
         <a class="nav-link"  routerLink="/auth/register">Register</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/auth/login">Login</a>
       </li>
-    </ng-container>
+    </ng-container> -->
   </ul>
 </header>

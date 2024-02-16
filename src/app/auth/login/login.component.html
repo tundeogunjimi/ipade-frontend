@@ -1,49 +1,51 @@
-
-<div class="container">
+<div class="container mt-5">
   <div class="row">
-    <div class="col-sm-4 offset-4 border p-3">
-      <h3>Login</h3>
-      <form [formGroup]="loginForm">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            aria-describedby="email"
-            placeholder="Email"
-            formControlName="email"
-          >
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Password"
-            formControlName="password"
-          >
-        </div>
-        <div class="mb-3 mt-3 text-end">
-          <button type="submit" class="btn btn-primary" (click)="login()">
-            <!--<span *ngIf="isSubmitted">
-              <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem"></i>
-            </span>-->
-            Submit
-          </button>
-        </div>
-      </form>
-
-      <div class="row mt-3">
-        <div class="col-sm-6">
-          <a routerLink="/auth/forgot-password">Forgot Password?</a>
-        </div>
-        <div class="col-sm-6 text-end">
-          <a routerLink="/auth/register">Register instead</a>
+    <div class="col-12 col-sm-4 offset-sm-4 p-3">
+      <div class="border p-3">
+        <h3>Login</h3>
+        <form [formGroup]="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              aria-describedby="email"
+              placeholder="Email"
+              formControlName="email"
+            >
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+              formControlName="password"
+            >
+          </div>
+          <div class="mb-3 mt-3 text-end">
+            <button type="submit" class="btn btn-primary" (click)="login()" [disabled]="isSubmitBtnDisabled">
+              <span *ngIf="isSubmitted">
+                <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem"></i>
+              </span>
+              <span *ngIf="!isSubmitted">
+                Submit
+              </span>
+            </button>
+          </div>
+        </form>
+        <div class="row mt-3">
+          <div class="col-6 col-sm-6">
+            <a class="link" routerLink="/auth/forgot-password">Forgot password?</a>
+          </div>
+          <div class="col-6 col-sm-6 text-end">
+            <a class="link" routerLink="/auth/register">Register instead</a>
+          </div>
         </div>
       </div>
-
+  
     </div>
   </div>
 

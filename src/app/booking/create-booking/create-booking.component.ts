@@ -22,7 +22,7 @@ export class CreateBookingComponent implements OnInit {
   public tenantName: string = ''
   private tenantUrl: string
   public formErrors: FormError
-  public slicedTime: any[]
+  public slicedTime: any[] = []
   public selectedTime: string
   public meeting: Meeting
   public minDate: Date

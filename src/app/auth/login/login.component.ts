@@ -13,7 +13,8 @@ import {MessageService} from "primeng/api";
 export class LoginComponent implements OnInit {
 
   public loginForm!: FormGroup
-  isSubmitted: boolean = false;
+  public isSubmitted: boolean = false;
+  public isSubmitBtnDisabled: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -38,6 +39,9 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.isSubmitted = true;
+    this.isSubmitBtnDisabled = true;
+
     const formValues = this.loginForm.getRawValue()
     const loginDetails = {
       email: formValues.email,
@@ -49,13 +53,13 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res)
-          this.isSubmitted = true
           localStorage.setItem('user', JSON.stringify(res))
           this.router.navigate(['/meeting'])
         },
         error: (e) => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: e.error.message });
-          this.isSubmitted = false
+          this.isSubmitted = false;
+          this.isSubmitBtnDisabled = false;
           console.log(e.error.message)
         }
       })

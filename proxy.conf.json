@@ -1,6 +1,11 @@
 {
-  "/api/*": {
+  "/xapi/*": {
     "target": "http://localhost:5000",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/api/*": {
+    "target": "https://ipade.onrender.com",
     "secure": false,
     "logLevel": "debug"
   }

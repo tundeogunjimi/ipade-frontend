@@ -7,6 +7,7 @@ import {MeetingService} from "../meeting.service";
 import {pipe, take} from "rxjs";
 import {MessageService} from "primeng/api";
 import {ShareChannel} from "../../shared/data/meeting/share-channel";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-meeting',
@@ -23,7 +24,7 @@ export class MeetingComponent implements OnInit{
   public formErrors: FormError
   public meetings: Meeting[]
   public selectedMeeting: Meeting
-  public saveButtonTxt: string = 'save'
+  public saveButtonTxt: string = 'Save'
   public isMeetingFetched: boolean = false
   public shouldShowAddressField: boolean = false
   public locations = [
@@ -39,8 +40,11 @@ export class MeetingComponent implements OnInit{
   ]
 
   public copyText: string = 'Copy link'
-  public baseUrl: string = `http://localhost:4200/booking/new`
-  public shareUrl: string
+  private baseUrl = environment.appUrl
+  public shareUrl: string;
+
+  public isSubmitted: boolean = false;
+  public isSubmitBtnDisabled: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -133,6 +137,7 @@ export class MeetingComponent implements OnInit{
         }
       })
   }
+
   selectMeeting(meeting: Meeting, shouldPatchValue?: boolean) {
     this.selectedMeeting = meeting
     const dateRange = [new Date(meeting.dateRange.start), new Date(meeting.dateRange.end)]
@@ -143,6 +148,7 @@ export class MeetingComponent implements OnInit{
         resumptionTime: new Date(meeting.resumptionTime),
         closingTime: new Date(meeting.closingTime),
       })
+      this.initializeFormErrors();
       this.saveButtonTxt = 'Update'
     }
     console.log(`selected event`, meeting)
@@ -157,6 +163,8 @@ export class MeetingComponent implements OnInit{
   }*/
 
   createMeeting(): void {
+    this.isSubmitted = true;
+    this.isSubmitBtnDisabled = true;
     const formValues = this.meetingForm.getRawValue()
 
     const dateRange = {
@@ -190,6 +198,8 @@ export class MeetingComponent implements OnInit{
           })
           this.meetingForm.reset()
           this.getMeetings(this.currentUser.id)
+          this.isSubmitted = false;
+          this.isSubmitBtnDisabled = false;
         },
         error: (e) => {
           this.messageService.add({
@@ -198,6 +208,8 @@ export class MeetingComponent implements OnInit{
             detail: e.error.message
           })
           this.formErrors = e.error
+          this.isSubmitted = false;
+          this.isSubmitBtnDisabled = false;
           console.log(`meeting creation failed`, e.error.message)
         }
       })
@@ -205,6 +217,9 @@ export class MeetingComponent implements OnInit{
   }
 
   updateMeeting() {
+    this.isSubmitted = true;
+    this.isSubmitBtnDisabled = true;
+
     const formValues = this.meetingForm.getRawValue()
     const dateRange = {
       start: formValues.dateRange[0],
@@ -219,12 +234,16 @@ export class MeetingComponent implements OnInit{
       .pipe(take(1))
       .subscribe({
         next: (res) => {
+          this.isSubmitted = false;
+          this.isSubmitBtnDisabled = false;
+
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Meeting successfully updated.'
           })
           this.meetings = []
+          this.saveButtonTxt = 'Save';
           this.getMeetings(this.currentUser.id)
           this.meetingForm.reset()
           this.cdr.detectChanges()
@@ -236,6 +255,8 @@ export class MeetingComponent implements OnInit{
             detail: e.error.message
           })
           this.formErrors = e.error
+          this.isSubmitted = false;
+          this.isSubmitBtnDisabled = false;
           console.log(`meeting update failed`, e.error.message)
         }
       })
@@ -247,7 +268,7 @@ export class MeetingComponent implements OnInit{
   }
 
   saveMeeting(): void {
-    if (this.saveButtonTxt === 'save') {
+    if (this.saveButtonTxt === 'Save') {
       this.createMeeting();
     } else {
       this.updateMeeting();

@@ -4,33 +4,7 @@
     <form [formGroup]="bookingForm">
       <div class="row">
 
-        <div class="col-md-5 col-sm-12">
-          <div class="form-control border-0">
-            <p-calendar
-              formControlName="date"
-              [inline]="true"
-              [minDate]="minDate"
-              [maxDate]="maxDate"
-              [defaultDate]="defaultDate"
-              (click)="sliceTime(meeting.duration)"
-            ></p-calendar>
-            <div class="text-danger" *ngIf="formErrors?.date">{{ formErrors?.date }}</div>
-          </div>
-        </div>
-
-        <div class="col-md-3 col-sm-12">
-          <p-scrollPanel [style]="{ width: '100%', height: '70vh' }" styleClass="custombar1">
-            <div class="text-danger" *ngIf="formErrors?.time">{{ formErrors?.time }}</div>
-            <ng-container *ngFor="let time of slicedTime">
-              <div class="time-select mt-2">
-                <input type="radio" class="btn-check" name="time" [attr.id]="time" [checked]="formatTime(time) === formatTime(selectedTime)" autocomplete="off" (click)="selectTime(time)">
-                <label class="btn btn-outline-primary btn-full-width" [attr.for]="time">{{ time | date: 'shortTime' }}</label>
-              </div>
-            </ng-container>
-          </p-scrollPanel>
-        </div>
-
-        <div class="col-md-4 col-sm-12">
+        <div class="col-12 col-md-4 col-sm-12">
           <div class="client-info">
             <p class="lead fw-medium text-secondary">{{ tenantName | titlecase }}</p>
             <h4 class="text-primary mb-2">{{ meeting?.name | titlecase }}</h4>
@@ -66,14 +40,45 @@
             <label for="message">Any other information you'd like to share?</label>
           </div>
 
-          <div class="row mt-5">
-            <div class="col-sm-12 text-end">
-              <button class="btn btn-outline-primary me-2">Reset Form</button>
-              <button class="btn btn-primary" (click)="saveBooking()">Proceed to Payment</button>
-            </div>
-          </div>
-
         </div>
+
+        <div class="col-12 col-md-5">
+          <div class="form-control border-0">
+            <p-calendar
+              formControlName="date"
+              [inline]="true"
+              [minDate]="minDate"
+              [maxDate]="maxDate"
+              [defaultDate]="defaultDate"
+              (click)="sliceTime(meeting.duration)"
+            ></p-calendar>
+            <div class="text-danger" *ngIf="formErrors?.date">{{ formErrors?.date }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-3 col-sm-12">
+          <p-scrollPanel [style]="{ width: '100%', height: '50vh' }" styleClass="custombar1">
+            <div class="text-danger" *ngIf="formErrors?.time">{{ formErrors?.time }}</div>
+            
+            <div *ngIf="slicedTime.length == 0" class="select-date text-primary text-bold fs-5 mt-5">
+              Select a date to see available times
+            </div>
+
+            <ng-container *ngFor="let time of slicedTime">
+              <div class="time-select mt-2">
+                <input type="radio" class="btn-check" name="time" [attr.id]="time" [checked]="formatTime(time) === formatTime(selectedTime)" autocomplete="off" (click)="selectTime(time)">
+                <label class="btn btn-outline-primary btn-full-width" [attr.for]="time">{{ time | date: 'shortTime' }}</label>
+              </div>
+            </ng-container>
+          </p-scrollPanel>
+        </div>
+
+        <div class="col-12">
+          <div class="text-end">
+            <button class="btn btn-primary" (click)="saveBooking()">Proceed to Payment</button>
+          </div>
+        </div>
+
       </div>
     </form>
 

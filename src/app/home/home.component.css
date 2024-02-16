@@ -110,3 +110,16 @@ h1 {
   margin: 1rem 0;
   color: #1050a5;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .container-fluid {
+    margin: auto;
+    padding: 10px;
+  }
+
+  .collage {
+    display: none;
+  }
+}
+

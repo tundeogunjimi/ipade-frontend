@@ -203,7 +203,17 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-12 text-end">
-                      <button class="btn btn-primary" (click)="saveMeeting()">{{ saveButtonTxt }} Meeting</button>
+                      <!-- <button class="btn btn-primary" (click)="saveMeeting()">{{ saveButtonTxt }} Meeting</button> -->
+
+                      <button type="submit" class="btn btn-primary" (click)="saveMeeting()" [disabled]="isSubmitBtnDisabled">
+                        <span *ngIf="isSubmitted">
+                          <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem"></i>
+                        </span>
+                        <span *ngIf="!isSubmitted">
+                          {{ saveButtonTxt }} Meeting
+                        </span>
+                      </button>
+
                     </div>
                   </div>
                 </form>

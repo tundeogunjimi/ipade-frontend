@@ -5,6 +5,7 @@ import {BookingService} from "../booking.service";
 import {take} from "rxjs";
 import {MeetingService} from "../../meeting/meeting.service";
 import {Meeting} from "../../shared/data/meeting/meeting";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-booking-details',
@@ -18,6 +19,7 @@ export class BookingDetailsComponent implements OnInit{
   private meetingId: string
   private bookingId: string
   private tenantId:string
+  private appUrl: string
 
   constructor(
     private router: Router,
@@ -25,6 +27,7 @@ export class BookingDetailsComponent implements OnInit{
     private bookingService: BookingService,
     private meetingService: MeetingService,
   ) {
+    this.appUrl = environment.appUrl
   }
 
   ngOnInit(): void {
@@ -60,12 +63,11 @@ export class BookingDetailsComponent implements OnInit{
 
   proceedToPayment(): void {
     const queryParams = `bookingId=${this.bookingId}&meetingId=${this.meetingId}&tenantId=${this.tenantId}`
-
     const transaction = { // todo: fetch these from tenant params
       tx_ref: "",
       amount: this.meeting.price,
       currency: "NGN",
-      redirect_url: `http://localhost:4200/booking/make-payment?${queryParams}`, // todo: set dynamically for dev & prod
+      redirect_url: `${this.appUrl}/booking/make-payment?${queryParams}`,
       meta: {
         consumer_id: 23,
         consumer_mac: '92a3-912ba-1192a'

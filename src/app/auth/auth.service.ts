@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {User} from "../shared/data/auth/user-model";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,11 @@ export class AuthService {
     'Accept': 'application/json',
   })
 
-  private baseUrl = `http://localhost:4200/api/users`
+  private baseUrl = environment.apiUrl +'/users'
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    console.log(`baseUrl >>>`, this.baseUrl)
+  }
 
   createUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/register`, JSON.stringify(user), { headers: this.headers})

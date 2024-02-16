@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Meeting} from "../shared/data/meeting/meeting";
 import {Observable} from "rxjs";
-import {Booking} from "../shared/data/booking/booking-model";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class MeetingService {
     'Accept': 'application/json',
   })
 
-  private baseUrl = `http://localhost:4200/api`
+  private baseUrl = environment.apiUrl
 
   constructor(private http: HttpClient) { }
 
